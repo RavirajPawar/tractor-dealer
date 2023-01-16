@@ -5,12 +5,98 @@
 <div class="row">
   <div class="col">
     <h3>Please Fill the details</h3>
-    <form method="post" action="{{ url_for('inventory.render_inventory')}}">
-      <div class="form-group">
-        <label class="control-label col-sm-4">CHASSIS NUMBER</label>
-        <input type="text" name="chassis-number" class="form-control">
+    <form  method="post" action="{{ url_for('inventory.render_inventory')}}">
+      <hr style="width:50%;text-align:left;margin-left:0">
+        <h6>OWNER INFORMATION</h6>
+      <div class="form-inline" >
+        <label class="control-label col-sm-4">ORIGINAL OWNER</label>
+        <input type="text"  placeholder="ORIGINAL OWNER" name="original-owner" class="form-control" required>
       </div>
-      <div class="form-group">
+      
+      
+        <div class="form-inline">
+          <label class="control-label col-sm-4">RELEASE DATE & TIME</label>
+          <input type="datetime-local"  name="release-date-time" class="form-control" required>
+        </div>
+
+        <hr style="width:50%;text-align:left;margin-left:0">
+        <h6>TRACTOR INFORMATION</h6>
+        <div class="form-inline" >
+          <label class="control-label col-sm-4">TRACTOR NAME</label>
+          <input type="text"  placeholder="TRACTOR NAME" name="tractor-name" class="form-control" required>
+        </div>
+        
+        <div class="form-inline" >
+          <label class="control-label col-sm-4">CHASSIS NO</label>
+          <input type="text"  placeholder="CHASSIS NUMBER" name="chassis-number" class="form-control" required>
+        </div>
+
+        <div class="form-inline" >
+          <label class="control-label col-sm-4">MODEL</label>
+          <input type="text"  placeholder="MODEL" name="model" class="form-control" required>
+        </div>
+
+        <div class="form-inline" >
+          <label class="control-label col-sm-4">YEAR OF MFG</label>
+          <input type="text"  placeholder="YEAR OF MANUFACTURE" name="year-of-manufacturing" class="form-control" required>
+        </div>
+
+        <div class="form-inline" >
+          <label class="control-label col-sm-4">REGISTRATION NO</label>
+          <input type="text"  placeholder="REGISTRATION NUMBER" name="registration-number" class="form-control" required>
+        </div>
+
+        <div class="form-inline" >
+          <label class="control-label col-sm-4">ENGINE NO</label>
+          <input type="text"  placeholder="ENGINE NUMBER" name="engine-number" class="form-control" required>
+        </div>
+
+        <div class="form-inline" >
+          <label class="control-label col-sm-4">HP HOURS</label>
+          <input type="text"  placeholder="HP HOURS" name="hp-hours" class="form-control" required>
+        </div>
+
+        <div class="form-inline">
+          <label for="formFileMultiple" class="form-label">4 PICTURES OF TRACTOR</label>
+          <input class="form-control" type="file" id="formFileMultiple" multiple />
+        </div>
+
+        <hr style="width:50%;text-align:left;margin-left:0">
+        <h6>PAYMENT INFORMATION</h6>
+
+        <div class="form-inline" >
+          <label class="control-label col-sm-4">PRICE</label>
+          <input type="text"  placeholder="PRICE" name="price" class="form-control" required>
+        </div>
+
+        <div class="form-inline" >
+          <label class="control-label col-sm-4">BANK</label>
+          <input type="text"  placeholder="BANK" name="bank" class="form-control" required>
+        </div>
+
+        <div class="input-group">
+          <label class="control-label col-sm-4">GODOWN NAME</label>
+          <input type="text" placeholder="GODOWN NAME" class="form-control" aria-label="Text input with dropdown button">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</button>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="#">ICHALKARANJI</a>
+              <a class="dropdown-item" href="#">NARANDE</a>
+              <a class="dropdown-item" href="#">ALTE</a>
+              <a class="dropdown-item" href="#">PUNE</a>
+              <div role="separator" class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Separated link</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-inline" >
+          <label class="control-label col-sm-4">GODOWN RENT</label>
+          <input type="text"  placeholder="GODOWN RENT" name="godown-rent" class="form-control" required>
+        </div>
+
+
+        <div class="form-inline">
         <input class="btn btn-primary" type="submit" value="Add TRACTOR">
       </div>
     </form>
