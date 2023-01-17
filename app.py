@@ -4,6 +4,7 @@ from connector import mongo_conn
 
 app = Flask(__name__)
 app.config["MONGO_URI"] = "mongodb://localhost:27017/tractor_dealer?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false"
+app.config['UPLOAD_FOLDER'] = "/data/"
 mongo_conn.init_app(app)
 
 
