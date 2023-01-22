@@ -22,5 +22,35 @@ def render_inventory():
             file.save(
                 os.path.join(f"data", tractor_details.get("chassis-number"), filename)
             )
+    elif request.method == "GET":
+        result = mongo_conn.db.stock_tractor.find({})
+        # ignore_keys = [
+        #     "_id",
+        #     "tractor-name",
+        #     "chassis-number",
+        #     "model",
+        #     "year-of-manufacturing",
+        #     "registration-number",
+        #     "engine-number",
+        #     "hp-hours",
+        #     "bank",
+        #     "original-owner",
+        #     "release-date-time",
+        #     "delievery-date-time",
+        #     "dealer",
+        #     "godown-name",
+        # ]
 
-    return render_template("inventory.html")
+        req_keys = [
+            "tractor-name",
+            "model",
+            "year-of-manufacturing",
+        ]
+        display_tractor = list()
+        for document in result:
+            temp = dict()
+            for req in req_keys:
+                temp[req] = document[req]
+            display_tractor.append(temp)
+
+    return render_template("inventory.html", display_tractor=display_tractor)
