@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, session, redirect
 from werkzeug.utils import secure_filename
 from connector import mongo_conn
 import os
-from inventory.helper import create_folder
+from inventory.helper import create_folder, lowercase_data
 from logger import logger
 
 inventory_blueprint = Blueprint(
@@ -14,7 +14,7 @@ inventory_blueprint = Blueprint(
 def render_inventory():
     if request.method == "POST":
         tractor_details = dict(request.form)
-        mongo_conn.db.stock_tractor.insert_one(tractor_details)
+        mongo_conn.db.stock_tractor.insert_one(lowercase_data(tractor_details))
         chassis_number = tractor_details.get("chassis-number")
         create_folder(chassis_number)
         for file in request.files.getlist("file"):
@@ -50,7 +50,7 @@ def render_inventory():
         for document in result:
             temp = dict()
             for req in req_keys:
-                temp[req] = document[req]
+                temp[req] = document.get(req)
             display_tractor.append(temp)
 
     return render_template("inventory.html", display_tractor=display_tractor)

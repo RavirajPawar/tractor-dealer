@@ -27,7 +27,8 @@
 
         <div class="form-inline">
           <label class="control-label col-sm-4">YEAR OF MFG</label>
-          <input type="text" placeholder="YEAR OF MANUFACTURE" name="year-of-manufacturing" class="form-control" required>
+          <input type="text" placeholder="YEAR OF MANUFACTURE" name="year-of-manufacturing" class="form-control"
+            required>
         </div>
 
         <div class="form-inline">
@@ -103,8 +104,27 @@
 
   <div class="col">
     <div class="card">
-      <h1>PLEASE DO NOT CHANGE THIS SECTION</h1>
-      <p>{{display_tractor}}</p>
+      <div class="card">RESERVE FOR SEARCH</div>
+      <div class="card">
+        <table class="table table-bordered" id="tractor-info">
+          <thead>
+            <tr class="table-primary">
+              <th scope="row">#</th>
+              <th scope="row">TRACTOR NAME</th>
+              <th scope="row">TRACTOR MODEL</th>
+              <th scope="row">YEAR OF MFG</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in display_tractor %}
+            <tr>
+              <td>{{loop.index}}</td>
+              <td>{{item["tractor-name"]}}</td>
+              <td>{{item["model"]}}</td>
+              <td>{{item["year-of-manufacturing"]}}</td>
+            </tr>
+            {% endfor %}
+      </div>
     </div>
 
   </div>

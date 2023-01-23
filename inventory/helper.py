@@ -16,5 +16,10 @@ def create_folder(chassis_number):
         return False
 
 
+def lowercase_data(given_dict):
+    return {str(key).lower(): str(value).lower() for key, value in given_dict.items()}
+
+
 if __name__ == "__main__":
     print(create_folder("imran123"))
+    print(lowercase_data({"HI":"hELLo"}))
