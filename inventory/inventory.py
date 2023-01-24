@@ -26,18 +26,11 @@ def add_tractor():
     return render_template("add_tractor.html")
 
 
-def xyz():
+@inventory_blueprint.route("/view-tractor", methods=["get"])
+def view_tractor():
     if request.method == "GET":
-        result = mongo_conn.db.stock_tractor.find({})
-
-        req_keys = [
-            "tractor-name",
-            "model",
-            "year-of-manufacturing",
-        ]
-        display_tractor = list()
-        for document in result:
-            temp = dict()
-            for req in req_keys:
-                temp[req] = document.get(req)
-            display_tractor.append(temp)
+        result = mongo_conn.db.stock_tractor.find(
+            {}, {"tractor-name": 1, "model": 1, "year-of-manufacturing": 1}
+        )
+        display_tractor = [dict(item) for item in result]
+        return render_template("view_inventory.html", display_tractor=display_tractor)
