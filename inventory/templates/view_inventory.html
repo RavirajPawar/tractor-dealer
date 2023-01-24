@@ -1,33 +1,40 @@
-{%extends 'layout.html'%}
+{%extends 'inventory_layout.html'%}
 
 {%block body%}
 
 <div class="row">
   <div class="col">
     <div class="card">
-      <div class="card">RESERVE FOR SEARCH</div>
-      <div class="card">
-        <table class="table table-bordered" id="tractor-info">
-          <thead>
-            <tr class="table-primary">
-              <th scope="row">#</th>
-              <th scope="row">TRACTOR NAME</th>
-              <th scope="row">TRACTOR MODEL</th>
-              <th scope="row">YEAR OF MFG</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for item in display_tractor %}
-            <tr>
-              <td>{{loop.index}}</td>
-              <td>{{item["tractor-name"]}}</td>
-              <td>{{item["model"]}}</td>
-              <td>{{item["year-of-manufacturing"]}}</td>
-            </tr>
-            {% endfor %}
-      </div>
+      <table class="table table-bordered" id="tractor-info">
+        <thead>
+          <tr class="table-primary">
+            <th scope="row">#</th>
+            <th scope="row">TRACTOR NAME</th>
+            <th scope="row">TRACTOR MODEL</th>
+            <th scope="row">YEAR OF MFG</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in display_tractor %}
+          <tr>
+            <td>{{loop.index}}</td>
+            <td>{{item["tractor-name"]}}</td>
+            <td>{{item["model"]}}</td>
+            <td>{{item["year-of-manufacturing"]}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
+  </div>
 
+  <div class="col">
+    <div class="card">
+      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, dignissimos nostrum. Odit autem illum
+        earum
+        repudiandae in eveniet eum assumenda dignissimos quod, natus dolores deleniti quia quos. Amet, officia ducimus?
+      </p>
+    </div>
   </div>
 </div>
 
