@@ -1,0 +1,36 @@
+{%extends 'layout.html'%}
+
+{%block body%}
+
+<div class="row">
+  <div class="col">
+    <div class="card">
+      <div class="card">RESERVE FOR SEARCH</div>
+      <div class="card">
+        <table class="table table-bordered" id="tractor-info">
+          <thead>
+            <tr class="table-primary">
+              <th scope="row">#</th>
+              <th scope="row">TRACTOR NAME</th>
+              <th scope="row">TRACTOR MODEL</th>
+              <th scope="row">YEAR OF MFG</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in display_tractor %}
+            <tr>
+              <td>{{loop.index}}</td>
+              <td>{{item["tractor-name"]}}</td>
+              <td>{{item["model"]}}</td>
+              <td>{{item["year-of-manufacturing"]}}</td>
+            </tr>
+            {% endfor %}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+{%endblock%}
