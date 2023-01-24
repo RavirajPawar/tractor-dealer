@@ -10,8 +10,8 @@ inventory_blueprint = Blueprint(
 )
 
 
-@inventory_blueprint.route("/inventory", methods=["get", "post"])
-def render_inventory():
+@inventory_blueprint.route("/add-tractor", methods=["get", "post"])
+def add_tractor():
     if request.method == "POST":
         tractor_details = dict(request.form)
         mongo_conn.db.stock_tractor.insert_one(lowercase_data(tractor_details))
@@ -22,24 +22,13 @@ def render_inventory():
             file.save(
                 os.path.join(f"data", tractor_details.get("chassis-number"), filename)
             )
-    elif request.method == "GET":
+
+    return render_template("add_tractor.html")
+
+
+def xyz():
+    if request.method == "GET":
         result = mongo_conn.db.stock_tractor.find({})
-        # ignore_keys = [
-        #     "_id",
-        #     "tractor-name",
-        #     "chassis-number",
-        #     "model",
-        #     "year-of-manufacturing",
-        #     "registration-number",
-        #     "engine-number",
-        #     "hp-hours",
-        #     "bank",
-        #     "original-owner",
-        #     "release-date-time",
-        #     "delievery-date-time",
-        #     "dealer",
-        #     "godown-name",
-        # ]
 
         req_keys = [
             "tractor-name",
@@ -52,5 +41,3 @@ def render_inventory():
             for req in req_keys:
                 temp[req] = document.get(req)
             display_tractor.append(temp)
-
-    return render_template("inventory.html", display_tractor=display_tractor)

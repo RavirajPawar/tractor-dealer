@@ -1,7 +1,7 @@
-{%extends 'layout.html'%}
+{%extends 'inventory_layout.html'%}
 
 {%block body%}
-<form method="post" action="{{ url_for('inventory.render_inventory')}}" enctype="multipart/form-data">
+<form method="post" action="{{ url_for('inventory.add_tractor')}}" enctype="multipart/form-data">
   <div class="row">
     <div class="col">
       <div class="card">
