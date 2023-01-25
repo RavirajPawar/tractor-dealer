@@ -5,7 +5,8 @@ from logger import logger
 def create_folder(chassis_number):
     try:
         if not os.path.exists(chassis_number):
-            os.makedirs(os.path.join("data", chassis_number))
+            os.makedirs(os.path.join("data", "before", chassis_number))
+            os.makedirs(os.path.join("data", "after", chassis_number))
             logger.info(f"{chassis_number} has been created")
             return True
     except FileExistsError:
@@ -22,4 +23,4 @@ def lowercase_data(given_dict):
 
 if __name__ == "__main__":
     print(create_folder("imran123"))
-    print(lowercase_data({"HI":"hELLo"}))
+    print(lowercase_data({"HI": "hELLo"}))

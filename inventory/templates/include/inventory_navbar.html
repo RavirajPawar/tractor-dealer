@@ -11,14 +11,27 @@
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
 
         <ul class="nav navbar-nav navbar-right">
-
-            <li class="nav-item active">
-                <a class="nav-link" href="{{ url_for('inventory.add_tractor')}}">Add Tractor</a>
+            <li class="nav-item dropdown active">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Inventory
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{{ url_for('inventory.add_tractor')}}">Add Tractor</a>
+                    <a class="dropdown-item" href="{{ url_for('inventory.view_tractor')}}">View Tractor</a>
+                </div>
             </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="{{ url_for('inventory.view_tractor')}}">View Tractor</a>
+            <li class="nav-item dropdown active">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Sell
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href=#>Sell Tractor</a>
+                    <a class="dropdown-item" href=#>Sell History</a>
+                </div>
             </li>
-
         </ul>
+
     </div>
 </nav>
