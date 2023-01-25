@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 from inventory.inventory import inventory_blueprint
+from orders.orders import orders_blueprint
 from connector import mongo_conn
 
 app = Flask(__name__)
@@ -10,6 +11,7 @@ mongo_conn.init_app(app)
 
 # registering blueprints
 app.register_blueprint(inventory_blueprint)
+app.register_blueprint(orders_blueprint)
 
 
 @app.route("/")
