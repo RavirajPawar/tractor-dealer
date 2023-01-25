@@ -1,0 +1,58 @@
+{%extends 'inventory_layout.html'%}
+
+{%block body%}
+
+<div class="row">
+  <div class="col">
+    <table class="table table-bordered" id="tractor-info">
+      <thead>
+        <tr class="table-primary">
+          <th scope="row">#</th>
+          <th scope="row">TRACTOR NAME</th>
+          <th scope="row">TRACTOR MODEL</th>
+          <th scope="row">YEAR OF MFG</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in all_tractor %}
+        <tr>
+          <td>{{loop.index}}</td>
+          <td>
+            <a href="{{ url_for('inventory.view_tractor', tractor=item['chassis-number'])}}">
+              {{item["tractor-name"]}}
+            </a>
+          </td>
+          <td>{{item["model"]}}</td>
+          <td>{{item["year-of-manufacturing"]}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+
+  <div class="col">
+    <div class="card">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="row">TRACTOR FEATURE</th>
+            <th scope="row">VALUE</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for key, value in display_tractor.items() %}
+          <tr>
+            <td>{{key}}</td>
+            <td>{{value}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+
+{%endblock%}

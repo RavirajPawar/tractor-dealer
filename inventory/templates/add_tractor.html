@@ -1,0 +1,95 @@
+{%extends 'inventory_layout.html'%}
+
+{%block body%}
+<form method="post" action="{{ url_for('inventory.add_tractor')}}" enctype="multipart/form-data">
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <legend class="bg-light text-dark">TRACTOR FEATURE</legend>
+        <table class="table-striped">
+          <thead>
+            <tr>
+              <td scope="col">TRACTOR NAME</td>
+              <td scope="col"><input type="text" placeholder="TRACTOR NAME" name="tractor-name" class="form-control" required></td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td scope="row">CHASSIS NO</td>
+              <td><input type="text" placeholder="CHASSIS NUMBER" name="chassis-number" class="form-control" required></td>
+            </tr>
+            <tr>
+              <td scope="row">MODEL</td>
+              <td><input type="text" placeholder="MODEL" name="model" class="form-control" required></td>
+            </tr>
+            <tr>
+              <td scope="row">YEAR OF MFG</td>
+              <td><input type="text" placeholder="YEAR OF MANUFACTURE" name="year-of-manufacturing" class="form-control"
+                required></td>
+            </tr>
+            <tr>
+              <td scope="row">REGISTRATION NO</td>
+              <td><input type="text" placeholder="REGISTRATION NUMBER" name="registration-number" class="form-control" required></td>
+            </tr>
+            <tr>
+              <td scope="row">ENGINE NO</td>
+              <td><input type="text" placeholder="ENGINE NUMBER" name="engine-number" class="form-control" required></td>
+            </tr>
+            <tr>
+              <td scope="row">HP</td>
+              <td><input type="text" placeholder="HP" name="hp-hours" class="form-control" required></td>
+            </tr>
+            <tr>
+              <td scope="row">HOURS</td>
+              <td><input type="text" placeholder="HOURS" name="hp-hours" class="form-control" required></td>
+            </tr>
+            <tr>
+              <td scope="row"><label for="formFileMultiple" class="form-label">PICTURES &emsp; &emsp;</label></td>
+              <td><input class="form-control" type="file" id="formFileMultiple" name="file" multiple required></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+    </div>
+    <div class="col">
+      <div class="card">
+      <table class="table-striped">
+        <tbody>
+          <legend class="bg-light text-dark">DEALER INFORMATION</legend>
+          <tr>
+            <td scope="col">BANK</td>
+            <td scope="col"><input type="text" placeholder="BANK" name="bank" class="form-control" required></td>
+          </tr>
+          <tr>
+            <td scope="row">ORIGINAL OWNER</td>
+            <td><input type="text" placeholder="ORIGINAL OWNER" name="original-owner" class="form-control" required></td>
+          </tr>
+          <tr>
+            <td scope="row">RELEASE DATE</td>
+            <td><input type="datetime-local" name="release-date-time" class="form-control" required></td>
+          </tr>
+          <tr>
+            <td scope="row">DELIVERY DATE</td>
+            <td><input type="datetime-local" name="delievery-date-time" class="form-control" required></td>
+          </tr>
+          <tr>
+            <td scope="row">BUYING GODWON</td>
+            <td><input type="text" placeholder="BUYING GODWON" name="dealer" class="form-control" required></td>
+          </tr>
+          <tr>
+            <td scope="row">STORING GODOWN</td>
+            <td><input type="text" placeholder="STORING GODOWN" name="storing-godown" class="form-control" required></td>
+          </tr>
+        </tbody>
+      </table>
+      <tr>
+        <td scope="row"></td>
+        <td></td>
+      </tr>
+      <button type="button" class="btn btn-primary btn-lg btn-block">Submit</button>
+      </div>
+    </div>
+  </div>
+</form>
+
+{%endblock%}
