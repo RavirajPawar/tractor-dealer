@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, session, redirect
+from flask import Blueprint, render_template, request, flash, redirect, url_for
 from werkzeug.utils import secure_filename
 from connector import mongo_conn
 import os
@@ -13,9 +13,15 @@ inventory_blueprint = Blueprint(
 @inventory_blueprint.route("/add-tractor", methods=["GET", "POST"])
 def add_tractor():
     if request.method == "POST":
-        tractor_details = dict(request.form)
-        mongo_conn.db.stock_tractor.insert_one(lowercase_data(tractor_details))
+        tractor_details = lowercase_data(dict(request.form))
         chassis_number = tractor_details.get("chassis-number")
+        if chassis_number in os.listdir("data"):
+            logger.warn(
+                "redirecting to add-tractor cause chassis_number folder already exists"
+            )
+            flash(f"chassis number {chassis_number} already exists")
+            return redirect(url_for("inventory.add_tractor"))
+        mongo_conn.db.stock_tractor.insert_one(tractor_details)
         create_folder(chassis_number)
         for file in request.files.getlist("pictures"):
             filename = secure_filename(file.filename)

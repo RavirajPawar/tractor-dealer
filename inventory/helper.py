@@ -4,6 +4,7 @@ from logger import logger
 
 def create_folder(chassis_number):
     try:
+        logger.info(f"creating_folder {chassis_number}")
         if not os.path.exists(chassis_number):
             os.makedirs(os.path.join("data", chassis_number, "before"))
             os.makedirs(os.path.join("data", chassis_number, "after"))
