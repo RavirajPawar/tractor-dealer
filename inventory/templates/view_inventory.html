@@ -33,25 +33,48 @@
 
   <div class="col">
     <div class="card">
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="row">TRACTOR FEATURE</th>
-            <th scope="row">VALUE</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for key, value in display_tractor.items() %}
-          <tr>
-            <td>{{key}}</td>
-            <td>{{value}}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+      <form enctype="multipart/form-data" method="POST">
+        {% for key, value in display_tractor.items() %}
+        {% if key == "chassis-number" %}
+        <div class="form-row">
+          <div class="col">{{key}}</div>
+          <div class="col">
+            <input type="text" class="form-control" value={{value}} name="{{key}}">
+          </div>
+        </div>
+        {% elif "date" in key %}
+        <div class="form-row">
+          <div class="col">{{key}}</div>
+          <div class="col">
+            <input type="datetime-local" class="form-control" value={{value}} name="{{key}}">
+          </div>
+        </div>
+        {% else %}
+        <div class="form-row">
+          <div class="col">{{key}}</div>
+          <div class="col">
+            <input type="text" class="form-control" value={{value}} name="{{key}}">
+          </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        <div class="form-row">
+          <div class="col">pictures</div>
+          <div class="col">
+            <input type="file" class="form-control" name="pictures" multiple>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col">Sure ?</div>
+          <div class="col">
+            <input class="btn btn-primary" style="text-align:center" type="submit" value="Update TRACTOR">
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </div>
+
 
 
 

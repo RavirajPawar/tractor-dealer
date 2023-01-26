@@ -17,7 +17,7 @@ def add_tractor():
         mongo_conn.db.stock_tractor.insert_one(lowercase_data(tractor_details))
         chassis_number = tractor_details.get("chassis-number")
         create_folder(chassis_number)
-        for file in request.files.getlist("file"):
+        for file in request.files.getlist("pictures"):
             filename = secure_filename(file.filename)
             file.save(
                 os.path.join(
@@ -27,9 +27,9 @@ def add_tractor():
     return render_template("add_tractor.html")
 
 
-@inventory_blueprint.route("/view-tractor", methods=["GET"])
-@inventory_blueprint.route("/view-tractor/<string:tractor>/")
-def view_tractor(tractor=None):
+@inventory_blueprint.route("/view-tractor", methods=["GET", "POST"])
+@inventory_blueprint.route("/view-tractor/<string:tractor>/", methods=["GET", "POST"])
+def view_tractor(tractor=None, display_tractor=dict()):
     if request.method == "GET":
         result = mongo_conn.db.stock_tractor.find({}, {"_id": 0})
         all_tractor = list()
@@ -46,3 +46,16 @@ def view_tractor(tractor=None):
             all_tractor=all_tractor,
             display_tractor=display_tractor,
         )
+
+    elif request.method == "POST":
+        update_tractor = {"$set": dict(request.form)}
+        tractor = (
+            update_tractor.get("$set").get("chassis-number") if not tractor else tractor
+        )
+        mongo_conn.db.stock_tractor.update_one(
+            {"chassis-number": tractor}, update_tractor
+        )
+        for file in request.files.getlist("pictures"):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(f"data", tractor, "before", filename))
+        return redirect("/view-tractor")

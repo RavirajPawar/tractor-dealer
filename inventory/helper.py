@@ -22,5 +22,5 @@ def lowercase_data(given_dict):
 
 
 if __name__ == "__main__":
-    print(create_folder("imran123"))
+    print(create_folder("1234GH45"))
     print(lowercase_data({"HI": "hELLo"}))
