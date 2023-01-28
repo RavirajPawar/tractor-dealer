@@ -13,6 +13,7 @@ inventory_blueprint = Blueprint(
 @inventory_blueprint.route("/add-tractor", methods=["GET", "POST"])
 def add_tractor():
     if request.method == "POST":
+        logger.info("started processing add-tractor")
         tractor_details = lowercase_data(dict(request.form))
         chassis_number = tractor_details.get("chassis-number")
         if chassis_number in os.listdir("data"):
@@ -30,6 +31,7 @@ def add_tractor():
                     f"data", tractor_details.get("chassis-number"), "before", filename
                 )
             )
+    logger.info("finished processing add-tractor")
     return render_template("add_tractor.html")
 
 
