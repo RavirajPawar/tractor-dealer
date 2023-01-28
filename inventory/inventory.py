@@ -17,7 +17,7 @@ def add_tractor():
         tractor_details = lowercase_data(dict(request.form))
         chassis_number = tractor_details.get("chassis-number")
         if chassis_number in os.listdir("data"):
-            logger.warn(
+            logger.warning(
                 "redirecting to add-tractor cause chassis_number folder already exists"
             )
             flash(f"chassis number {chassis_number} already exists")
