@@ -47,21 +47,21 @@
           <div class="col">{{key}}</div>
           <input type="hidden" class="form-control" name="old-chassis-number" value="{{value}}">
           <div class="col">
-            <input type="text" class="form-control" value={{value}} name="{{key}}">
+            <input type="text" class="form-control" value="{{value}}" name="{{key}}">
           </div>
         </div>
         {% elif "date" in key %}
         <div class="form-row">
           <div class="col">{{key}}</div>
           <div class="col">
-            <input type="datetime-local" class="form-control" value={{value.upper()}} name="{{key}}">
+            <input type="datetime-local" class="form-control" value="{{value.upper()}}" name="{{key}}">
           </div>
         </div>
         {% elif "old-chassis-number" not in key %}
         <div class="form-row">
           <div class="col">{{key}}</div>
           <div class="col">
-            <input type="text" class="form-control" value={{value}} name="{{key}}">
+            <input type="text" class="form-control" value="{{value}}" name="{{key}}">
           </div>
         </div>
         {% endif %}
