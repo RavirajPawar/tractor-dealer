@@ -5,11 +5,10 @@ from logger import logger
 def create_folder(chassis_number):
     try:
         logger.info(f"creating_folder {chassis_number}")
-        if not os.path.exists(chassis_number):
-            os.makedirs(os.path.join("data", chassis_number, "before"))
-            os.makedirs(os.path.join("data", chassis_number, "after"))
-            logger.info(f"{chassis_number} has been created")
-            return True
+        os.makedirs(os.path.join(".data", chassis_number, "before"))
+        os.makedirs(os.path.join(".data", chassis_number, "after"))
+        logger.info(f"{chassis_number} has been created")
+        return True
     except FileExistsError:
         logger.exception(f"{chassis_number} already exist")
         return False
