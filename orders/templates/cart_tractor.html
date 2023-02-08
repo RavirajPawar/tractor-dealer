@@ -1,0 +1,12 @@
+{%extends 'orders_layout.html'%}
+
+{%block body%}
+<div class="row">
+    {% if not result %}
+    <h1>COULD NOT FETCH DATA AND NEW TABLE FOR SELL {{tractor}}</h1>
+    {% else %}
+    {{result}}
+    {% endif %}
+</div>
+
+{%endblock%}

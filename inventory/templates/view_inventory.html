@@ -26,8 +26,10 @@
           <td>{{item["model"]}}</td>
           <td>{{item["year-of-manufacturing"]}}</td>
           <td>
-            <a href="{{ url_for('inventory.download_zip', tractor=item['chassis-number'])}}">
-              {{item["chassis-number"]}}
+            <a href="{{ url_for('inventory.download_zip', tractor=item['chassis-number'])}}" role="button"
+              class="btn btn-dark btn-block">
+              DOWNLOAD ZIP
+              <!-- {{item["chassis-number"]}} -->
             </a>
           </td>
 
