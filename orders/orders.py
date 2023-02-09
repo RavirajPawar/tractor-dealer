@@ -14,8 +14,32 @@ orders_blueprint = Blueprint(
 @orders_blueprint.route("/sell-tractor/<string:tractor>/", methods=["GET"])
 def sell_tractor(tractor=None, display_tractor=dict()):
     if tractor:
-        result = mongo_conn.db.stock_tractor.find_one({"chassis-number":tractor}, {"_id": 0})
-        return render_template("cart_tractor.html", tractor=tractor, result=result)
+        result = mongo_conn.db.stock_tractor.find_one(
+            {"chassis-number": tractor}, {"_id": 0, "old-chassis-number": 0}
+        )
+        customer_details = {
+            "buyer name": "text",
+            "address": "text",
+            "contact": "text",
+            "wintness": "text",
+            "witness contact": "text",
+            "aadhar card": "file",
+            "pan card": "file",
+            "7/12": "file",
+            "PUC": "file",
+            "RC": "file",
+            "insurance": "file",
+            "NOC delivery": "file",
+            "Sell photo": "file",
+        }
+        keys = list(zip(result.keys(), customer_details.keys()))
+        return render_template(
+            "cart_tractor.html",
+            tractor=tractor,
+            result=result,
+            customer_details=customer_details,
+            keys= keys
+        )
 
     if not tractor:
         logger.info("started processing sell-tractor".center(80, "^"))
