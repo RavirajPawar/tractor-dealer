@@ -24,37 +24,60 @@ inventory_blueprint = Blueprint(
 
 @inventory_blueprint.route("/add-tractor", methods=["GET", "POST"])
 def add_tractor():
+    """
+    * checks `chassis_number` folder is not exists in `.data` folder.
+    * if not creates folder under `.data` and `inserts` data to mongo db.
+    * saves all files in newly created `before` subfolder unders `chassis-number`.
+    """
     if request.method == "POST":
-        logger.info("started processing add-tractor".center(80, "^"))
-        tractor_details = lowercase_data(dict(request.form))
-        chassis_number = tractor_details.get("chassis-number")
-        if chassis_number in os.listdir(".data"):
-            logger.warning(
-                f"redirecting to add-tractor cause {chassis_number} folder already exists"
-            )
-            flash(f"chassis number {chassis_number} already exists")
-            return redirect(url_for("inventory.add_tractor"))
-        create_folder(chassis_number)
-        mongo_conn.db.stock_tractor.insert_one(tractor_details)
-
-        for file in request.files.getlist("pictures"):
-            if secure_filename(file.filename):
-                file.save(
-                    os.path.join(
-                        ".data",
-                        tractor_details.get("chassis-number"),
-                        "before",
-                        secure_filename(file.filename),
-                    )
+        try:
+            logger.info("started processing add-tractor".center(80, "^"))
+            tractor_details = lowercase_data(dict(request.form))
+            chassis_number = tractor_details.get("chassis-number")
+            if chassis_number in os.listdir(".data"):
+                logger.warning(
+                    f"redirecting to add-tractor cause {chassis_number} folder already exists"
                 )
-                logger.info(f"{file.filename}->{tractor_details.get('chassis-number')}")
-    logger.info("finished processing add-tractor".center(80, "^"))
+                flash(f"chassis number {chassis_number} already exists")
+                return redirect(url_for("inventory.add_tractor"))
+            create_folder(chassis_number)
+            mongo_conn.db.stock_tractor.insert_one(tractor_details)
+            for file in request.files.getlist("pictures"):
+                if secure_filename(file.filename):
+                    file.save(
+                        os.path.join(
+                            ".data",
+                            tractor_details.get("chassis-number"),
+                            "before",
+                            secure_filename(file.filename),
+                        )
+                    )
+                    logger.info(f"{file.filename}->{tractor_details.get('chassis-number')}")
+            logger.info("finished processing add-tractor".center(80, "^"))
+        except Exception as e:
+            logger.exception(f"{str(e)}", exc_info=True)
     return render_template("add_tractor.html")
 
 
 @inventory_blueprint.route("/view-tractor", methods=["GET", "POST"])
 @inventory_blueprint.route("/view-tractor/<string:tractor>/", methods=["GET", "POST"])
 def view_tractor(tractor=None, display_tractor=dict()):
+    """
+    `GET` displays all available tractor in inventory.
+    * fetches all `not sold tractor` from mongo db.
+    * creates list all tractors and stores in `all_tractor`.
+    * display_tractor is first tractor from result set.
+
+    `POST` updates tractors details.
+    * empty `request.form` is not affecting existing data.
+    * Allows updating chassis-number if already not existes.
+    * updates mongo db and uploads new images without deleting old one.
+
+    Args:
+        tractor (str, optional): tractor chassis number. Defaults to None.
+        display_tractor (dict, optional): mongo docuent. Defaults to dict().
+        
+    """
     if request.method == "GET":
         logger.info("started processing view-tractor".center(80, "^"))
         result = mongo_conn.db.stock_tractor.find({"is-sold": "false"}, {"_id": 0})
@@ -87,6 +110,9 @@ def view_tractor(tractor=None, display_tractor=dict()):
                 flash(
                     f"Denied updating chassis number from {old_chassis_number} to {chassis_number}."
                 )
+                flash(
+                    f"Reason {chassis_number} already existes."
+                )
                 return redirect(url_for("inventory.view_tractor"))
             logger.info(f"renaming tractor {old_chassis_number} folder name")
             os.rename(
@@ -118,6 +144,15 @@ def view_tractor(tractor=None, display_tractor=dict()):
 
 @inventory_blueprint.route("/download-zip/<string:tractor>/", methods=["GET"])
 def download_zip(tractor=None):
+    """
+    purpose is providing zip file of tractor photos before sell to customer.
+    * creates zip file under chassis-number folder.
+    * clubs all files present under before subfolder.
+
+    Args:
+        tractor (str, optional): tractor chassis-number. Defaults to None.
+
+    """
     try:
         logger.info(f"started download-zip api for {tractor}")
         zipf = zipfile.ZipFile(
@@ -139,5 +174,6 @@ def download_zip(tractor=None):
         )
 
     except Exception as e:
+        flash(f"Invalid operation. {tractor} does not exist.")
         logger.exception(str(e), exc_info=True)
-        return str(e)
+        return redirect("/")
