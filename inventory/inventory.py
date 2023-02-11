@@ -57,7 +57,7 @@ def add_tractor():
 def view_tractor(tractor=None, display_tractor=dict()):
     if request.method == "GET":
         logger.info("started processing view-tractor".center(80, "^"))
-        result = mongo_conn.db.stock_tractor.find({}, {"_id": 0})
+        result = mongo_conn.db.stock_tractor.find({"is-sold": "false"}, {"_id": 0})
         all_tractor = list()
         for item in result:
             all_tractor.append(dict(item))
@@ -111,7 +111,7 @@ def view_tractor(tractor=None, display_tractor=dict()):
                         secure_filename(file.filename),
                     )
                 )
-                logger.info(f"updated at {file.filename}->{chassis_number}")
+                logger.info(f"updated at {file.filename}\t-> {chassis_number}")
 
         return redirect("/view-tractor")
 
