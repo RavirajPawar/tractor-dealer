@@ -17,13 +17,13 @@
           <label for="tractor-name">TRACTOR NAME</label>
         </div>
         <div class="col">
-          <input type="text" class="form-control" placeholder="TRACTOR NAME">
+          <input type="text" class="form-control" placeholder="TRACTOR NAME" name="tractor-name" required>
         </div>
         <div class="col">
           <label for="tractor-name">BANK</label>
         </div>
         <div class="col">
-          <input type="text" class="form-control" placeholder="BANK">
+          <input type="text" class="form-control" placeholder="BANK" name="bank">
         </div>
       </div>
       <div class="form-row bg-white text-dark">
@@ -31,13 +31,13 @@
           <label for="chassis-number">CHASSIS NUMBER</label>
         </div>
         <div class="col">
-          <input type="text" class="form-control" placeholder="CHASSIS NUMBER">
+          <input type="text" class="form-control" placeholder="CHASSIS NUMBER" name="chassis-number" required>
         </div>
         <div class="col">
           <label for="tractor-name">ORIGINAL OWNER</label>
         </div>
         <div class="col">
-          <input type="text" class="form-control" placeholder="ORIGINAL OWNER">
+          <input type="text" class="form-control" placeholder="ORIGINAL OWNER" name="originl-owner">
         </div>
       </div>
       <div class="form-row bg-light text-dark">
@@ -45,13 +45,13 @@
           <label for="model">MODEL</label>
         </div>
         <div class="col">
-          <input type="text" class="form-control" placeholder="MODEL">
+          <input type="text" class="form-control" placeholder="MODEL" name="model">
         </div>
         <div class="col">
           <label for="release-date">RELEASE DATE</label>
         </div>
         <div class="col">
-          <input type="datetime-local" class="form-control" placeholder="RELEASE DATE">
+          <input type="datetime-local" class="form-control" placeholder="RELEASE DATE" name="release-date">
         </div>
       </div>
       <div class="form-row bg-white text-dark">
@@ -59,23 +59,23 @@
           <label for="year-of-manufacturing">YEAR OF MANUFACTURING</label>
         </div>
         <div class="col">
-          <input type="text" class="form-control" placeholder="YEAR OF MANUFACTURING">
+          <input type="text" class="form-control" placeholder="YEAR OF MANUFACTURING" name="year-of-manufacturing">
         </div>
         <div class="col">
           <label for="delevery-date">DELEVERY DATE</label>
         </div>
         <div class="col">
-          <input type="datetime-local" class="form-control" placeholder="DELEVERY DATE">
+          <input type="datetime-local" class="form-control" placeholder="DELEVERY DATE" name="delevery-date">
         </div>
       </div>
-      <div class="form-row bg-light text-dark">
+      <div class=" form-row bg-light text-dark">
         <div class="col">
           <label for="registration-number">REGISTRATION NUMBER</label>
         </div>
         <div class="col">
-          <input type="text" class="form-control" placeholder="REGISTRATION NUMBER">
+          <input type="text" class="form-control" placeholder="REGISTRATION NUMBER" name="registration-number">
         </div>
-        <div class="col">
+        <div class=" col">
           <label for="buying-godown">BUYING GODOWN</label>
         </div>
         <div class="col">
@@ -87,13 +87,13 @@
           <label for="engine-number">ENGINE NUMBER</label>
         </div>
         <div class="col">
-          <input type="text" class="form-control" placeholder="ENGINE NUMBER">
+          <input type="text" class="form-control" placeholder="ENGINE NUMBER" name="engine-number">
         </div>
         <div class="col">
           <label for="storing-godown">STORING GODOWN</label>
         </div>
         <div class="col">
-          <input type="text" class="form-control" placeholder="STORING GODOWN">
+          <input type="text" class="form-control" placeholder="STORING GODOWN" name="storing-godown">
         </div>
       </div>
       <div class="form-row bg-light text-dark">
@@ -101,25 +101,27 @@
           <label for="hp">HP</label>
         </div>
         <div class="col-3">
-          <input type="text" class="form-control" placeholder="HP">
+          <input type="text" class="form-control" placeholder="HP" name="hp">
         </div>
-  
+        <div class="col">
+          <input type="hidden" name="is-sold" value="false">
+        </div>
+
       </div>
       <div class="form-row bg-white text-dark">
         <div class="col-3">
           <label for="hours">HOURS</label>
         </div>
         <div class="col-3">
-          <input type="text" class="form-control" placeholder="HOURS">
+          <input type="text" class="form-control" placeholder="HOURS" name="hours">
         </div>
-  
       </div>
       <div class="form-row bg-light text-dark">
         <div class="col">
           <label for="pictures">PICTURES</label>
         </div>
         <div class="col">
-          <input type="file" class="form-control" placeholder="PICTURES">
+          <input type="file" class="form-control" placeholder="PICTURES" name="pictures" multiple>
         </div>
         <div class="col">
           <label>WANT TO SUBMIT?</label>
@@ -127,7 +129,6 @@
         <div class="col-3">
           <button type="submit" class="btn btn-primary px-4 float-right">ADD TRACTOR</button>
         </div>
-  
       </div>
     </form>
   </div>

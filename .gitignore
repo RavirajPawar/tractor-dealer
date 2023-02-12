@@ -144,4 +144,4 @@ cython_debug/
 
 #Music Folder
 static/music/
-/data/
+/.data/

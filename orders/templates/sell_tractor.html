@@ -1,0 +1,39 @@
+{%extends 'orders_layout.html'%}
+
+{%block body%}
+<div class="row">
+    <div class="col">
+        <table class="table table-bordered" id="tractor-info">
+            <thead>
+                <tr class="table-primary">
+                    <th scope="row">#</th>
+                    <th scope="row">TRACTOR NAME</th>
+                    <th scope="row">TRACTOR MODEL</th>
+                    <th scope="row">YEAR OF MFG</th>
+                    <th scope="row">SELL</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in all_tractor %}
+                <tr>
+                    <td>{{loop.index}}</td>
+                    <td>{{item["tractor-name"]}}</td>
+                    <td>{{item["model"]}}</td>
+                    <td>{{item["year-of-manufacturing"]}}</td>
+                    <td>
+                        <a href="{{ url_for('orders.sell_tractor', tractor=item['chassis-number'])}}" role="button"
+                            class="btn btn-success btn-block">
+                            SELL
+                            <!-- {{item["chassis-number"]}} -->
+                        </a>
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+{%endblock%}

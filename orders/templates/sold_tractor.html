@@ -1,0 +1,29 @@
+{%extends 'orders_layout.html'%}
+{%block body%}
+<div class="row">
+    <div class="col">
+        <table class="table table-bordered" id="tractor-info">
+            {% with keys = sold_tractor[0].keys() if sold_tractor else []%}
+            <thead>
+                <tr class="table-primary">
+                    <th scope="row">#</th>
+                    {% for key in keys%}
+                    <th scope="row">{{key}}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for tractor in sold_tractor%}
+                <tr>
+                    <td>{{loop.index}}</td>
+                    {% for key in keys%}
+                    <td>{{tractor[key]}}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+            {% endwith %}
+        </table>
+    </div>
+</div>
+{%endblock%}
