@@ -18,7 +18,7 @@ def sell_tractor(tractor=None):
             {"chassis-number": tractor},
             {"_id": 0, "old-chassis-number": 0, "is-sold": 0},
         )
-        if not result: # if result not found 
+        if not result:  # if result not found
             result = dict()
 
         customer_details = {
@@ -80,3 +80,12 @@ def final_sell():
     )
     logger.info(f"finished updating tractor {chassis_number} in DB")
     return redirect("/sell-tractor")
+
+
+@orders_blueprint.route("/sold-tractor", methods=["GET", "POST"])
+def sold_tractor():
+    result = mongo_conn.db.stock_tractor.find(
+        {"is-sold": "true"}, {"_id": 0, "is-sold": 0}
+    )
+    sold_tractor = [item for item in result]
+    return render_template("sold_tractor.html", sold_tractor=sold_tractor)
