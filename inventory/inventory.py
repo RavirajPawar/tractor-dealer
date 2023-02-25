@@ -9,11 +9,10 @@ from flask import (
 )
 from werkzeug.utils import secure_filename
 from connector import mongo_conn
+from constants import UPLOAD_FOLDER
 import os
 from inventory.helper import create_folder, lowercase_data
 from logger import logger
-from io import BytesIO
-from glob import glob
 import zipfile
 
 
@@ -34,7 +33,7 @@ def add_tractor():
             logger.info("started processing add-tractor".center(80, "^"))
             tractor_details = lowercase_data(dict(request.form))
             chassis_number = tractor_details.get("chassis-number")
-            if chassis_number in os.listdir(".data"):
+            if chassis_number in os.listdir(UPLOAD_FOLDER):
                 logger.warning(
                     f"redirecting to add-tractor cause {chassis_number} folder already exists"
                 )
@@ -46,7 +45,7 @@ def add_tractor():
                 if secure_filename(file.filename):
                     file.save(
                         os.path.join(
-                            ".data",
+                            UPLOAD_FOLDER,
                             tractor_details.get("chassis-number"),
                             "before",
                             secure_filename(file.filename),
@@ -114,7 +113,7 @@ def update_tractor(tractor=None):
         tractor = old_chassis_number if not tractor else tractor
 
         if old_chassis_number != chassis_number:
-            if os.path.exists(os.path.join(".data", chassis_number)):
+            if os.path.exists(os.path.join(UPLOAD_FOLDER, chassis_number)):
                 flash(
                     f"Denied updating chassis number from {old_chassis_number} to {chassis_number}."
                 )
@@ -122,8 +121,8 @@ def update_tractor(tractor=None):
                 return redirect(url_for("inventory.view_tractor"))
             logger.info(f"renaming tractor {old_chassis_number} folder name")
             os.rename(
-                os.path.join(".data", old_chassis_number),
-                os.path.join(".data", chassis_number),
+                os.path.join(UPLOAD_FOLDER, old_chassis_number),
+                os.path.join(UPLOAD_FOLDER, chassis_number),
             )
             logger.info(f"renamed tractor {chassis_number} folder name")
 
@@ -137,7 +136,7 @@ def update_tractor(tractor=None):
             if secure_filename(file.filename):
                 file.save(
                     os.path.join(
-                        ".data",
+                        UPLOAD_FOLDER,
                         chassis_number,
                         "before",
                         secure_filename(file.filename),
@@ -162,18 +161,18 @@ def download_zip(tractor=None):
     try:
         logger.info(f"started download-zip api for {tractor}")
         zipf = zipfile.ZipFile(
-            os.path.join(".data", tractor, f"{tractor}-photos.zip"),
+            os.path.join(UPLOAD_FOLDER, tractor, f"{tractor}-photos.zip"),
             "w",
             zipfile.ZIP_DEFLATED,
         )
-        for file in os.listdir(os.path.join(".data", tractor, "before")):
-            zipf.write(os.path.join(".data", tractor, "before", file), file)
+        for file in os.listdir(os.path.join(UPLOAD_FOLDER, tractor, "before")):
+            zipf.write(os.path.join(UPLOAD_FOLDER, tractor, "before", file), file)
         zipf.close()
         logger.info(
-            f'created zip file at {os.path.join(".data", tractor, f"{tractor}-photos.zip")}'
+            f'created zip file at {os.path.join(UPLOAD_FOLDER, tractor, f"{tractor}-photos.zip")}'
         )
         return send_file(
-            os.path.join(".data", tractor, f"{tractor}-photos.zip"),
+            os.path.join(UPLOAD_FOLDER, tractor, f"{tractor}-photos.zip"),
             mimetype="zip",
             download_name=f"{tractor}-photos.zip",
             as_attachment=True,
