@@ -52,21 +52,37 @@ def add_tractor():
                             secure_filename(file.filename),
                         )
                     )
-                    logger.info(f"{file.filename}->{tractor_details.get('chassis-number')}")
+                    logger.info(
+                        f"{file.filename}->{tractor_details.get('chassis-number')}"
+                    )
             logger.info("finished processing add-tractor".center(80, "^"))
         except Exception as e:
             logger.exception(f"{str(e)}", exc_info=True)
     return render_template("add_tractor.html")
 
 
-@inventory_blueprint.route("/view-tractor", methods=["GET", "POST"])
-@inventory_blueprint.route("/view-tractor/<string:tractor>/", methods=["GET", "POST"])
-def view_tractor(tractor=None, display_tractor=dict()):
+@inventory_blueprint.route("/view-tractor", methods=["GET"])
+def view_tractor():
     """
     `GET` displays all available tractor in inventory.
     * fetches all `not sold tractor` from mongo db.
     * creates list all tractors and stores in `all_tractor`.
-    * display_tractor is first tractor from result set.
+    """
+    if request.method == "GET":
+        logger.info("started processing view-tractor".center(80, "^"))
+        result = mongo_conn.db.stock_tractor.find({"is-sold": "false"}, {"_id": 0})
+        all_tractor = [tractor for tractor in result]
+        logger.info("Finished processing view-tractor".center(80, "^"))
+        return render_template(
+            "view_inventory.html",
+            all_tractor=all_tractor,
+        )
+
+
+@inventory_blueprint.route("/update-tractor/<string:tractor>/", methods=["GET", "POST"])
+def update_tractor(tractor=None):
+    """
+    `GET` method shows existing information of tractor
 
     `POST` updates tractors details.
     * empty `request.form` is not affecting existing data.
@@ -75,27 +91,19 @@ def view_tractor(tractor=None, display_tractor=dict()):
 
     Args:
         tractor (str, optional): tractor chassis number. Defaults to None.
-        display_tractor (dict, optional): mongo docuent. Defaults to dict().
-        
+
     """
     if request.method == "GET":
         logger.info("started processing view-tractor".center(80, "^"))
-        result = mongo_conn.db.stock_tractor.find({"is-sold": "false"}, {"_id": 0})
-        all_tractor = list()
-        for item in result:
-            all_tractor.append(dict(item))
-            if not tractor:
-                display_tractor = all_tractor[-1]
-                tractor = True
-            elif item["chassis-number"] == tractor:
-                display_tractor = all_tractor[-1]
-        logger.info("Finished processing view-tractor".center(80, "^"))
+        display_tractor = mongo_conn.db.stock_tractor.find_one(
+            {"chassis-number": tractor}, {"_id": 0, "is-sold": 0}
+        )
+        # Null response check
+        display_tractor = display_tractor if display_tractor else dict()
         return render_template(
-            "view_inventory.html",
-            all_tractor=all_tractor,
+            "update_tractor.html",
             display_tractor=display_tractor,
         )
-
     elif request.method == "POST":
         if not dict(request.form):  #
             return redirect("/view-tractor")
@@ -110,9 +118,7 @@ def view_tractor(tractor=None, display_tractor=dict()):
                 flash(
                     f"Denied updating chassis number from {old_chassis_number} to {chassis_number}."
                 )
-                flash(
-                    f"Reason {chassis_number} already existes."
-                )
+                flash(f"Reason {chassis_number} already existes.")
                 return redirect(url_for("inventory.view_tractor"))
             logger.info(f"renaming tractor {old_chassis_number} folder name")
             os.rename(
