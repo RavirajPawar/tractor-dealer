@@ -27,6 +27,15 @@
 <body>
     {%include 'include/orders_navbar.html'%}
     <div class="container">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class="list-group">
+            {% for message in messages %}
+            <li class="list-group-item list-group-item-danger">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
         {%block body%}
 
 

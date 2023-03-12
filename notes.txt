@@ -2,3 +2,6 @@ https://github.com/RavirajPawar/WazirXAnalytics
 
 # mongo delete all documents
 db.stock_tractor.deleteMany({});
+
+# file download
+https://stackoverflow.com/questions/28568687/send-with-multiple-csvs-using-flask
