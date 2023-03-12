@@ -99,9 +99,11 @@ def update_tractor(tractor=None):
         )
         # Null response check
         display_tractor = display_tractor if display_tractor else dict()
+        path = os.path.join(UPLOAD_FOLDER, tractor, "before")
+        files = [os.path.join(path, file) for file in os.listdir(path)]
+        files = {file: os.path.exists(file) for file in files}
         return render_template(
-            "update_tractor.html",
-            display_tractor=display_tractor,
+            "update_tractor.html", display_tractor=display_tractor, files=files
         )
     elif request.method == "POST":
         if not dict(request.form):  #
@@ -144,7 +146,7 @@ def update_tractor(tractor=None):
                 )
                 logger.info(f"updated at {file.filename}\t-> {chassis_number}")
 
-        return redirect("/view-tractor")
+        return redirect(f"/update-tractor/{chassis_number}")
 
 
 @inventory_blueprint.route("/download-zip/<string:tractor>/", methods=["GET"])

@@ -1,1 +1,1 @@
-UPLOAD_FOLDER = ".data"
+UPLOAD_FOLDER = r"static\uploads"

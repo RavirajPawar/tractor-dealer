@@ -47,6 +47,11 @@
       </form>
     </div>
   </div>
+  <div class="col">
+    {% for file in files %}
+      <img src="{{ url_for('.static', filename='{{file}}') }}" alt="{{file}}">
+    {%endfor%}
+  </div>
 </div>
 
 
