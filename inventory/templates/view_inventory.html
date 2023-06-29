@@ -11,19 +11,33 @@
           <th scope="row">TRACTOR NAME</th>
           <th scope="row">TRACTOR MODEL</th>
           <th scope="row">YEAR OF MFG</th>
+          <th scope="row">DOWNLOAD PHOTOS</th>
+          <th scope="row">UPDATE INFO</th>
+
         </tr>
       </thead>
       <tbody>
         {% for item in all_tractor %}
         <tr>
           <td>{{loop.index}}</td>
-          <td>
-            <a href="{{ url_for('inventory.view_tractor', tractor=item['chassis-number'])}}">
-              {{item["tractor-name"]}}
-            </a>
-          </td>
+          <td>{{item["tractor-name"]}}</td>
           <td>{{item["model"]}}</td>
           <td>{{item["year-of-manufacturing"]}}</td>
+          <td>
+            <a href="{{ url_for('inventory.download_zip', tractor=item['chassis-number'])}}" role="button"
+              class="btn btn-dark btn-block">
+              DOWNLOAD ZIP
+              <!-- {{item["chassis-number"]}} -->
+            </a>
+          </td>
+          <td>
+            <a href="{{ url_for('inventory.update_tractor', tractor=item['chassis-number'])}}" role="button"
+              class="btn btn-info btn-block">
+              UPDATE INFO
+              <!-- {{item["chassis-number"]}} -->
+            </a>
+          </td>
+
         </tr>
         {% endfor %}
       </tbody>
@@ -31,27 +45,8 @@
 
   </div>
 
-  <div class="col">
-    <div class="card">
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="row">TRACTOR FEATURE</th>
-            <th scope="row">VALUE</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for key, value in display_tractor.items() %}
-          <tr>
-            <td>{{key}}</td>
-            <td>{{value}}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </div>
 </div>
+
 
 
 

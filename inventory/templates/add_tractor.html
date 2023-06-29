@@ -1,95 +1,139 @@
 {%extends 'inventory_layout.html'%}
 
 {%block body%}
-<form method="post" action="{{ url_for('inventory.add_tractor')}}" enctype="multipart/form-data">
-  <div class="row">
-    <div class="col">
-      <div class="card">
-        <legend class="bg-light text-dark">TRACTOR FEATURE</legend>
-        <table class="table-striped">
-          <thead>
-            <tr>
-              <td scope="col">TRACTOR NAME</td>
-              <td scope="col"><input type="text" placeholder="TRACTOR NAME" name="tractor-name" class="form-control" required></td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td scope="row">CHASSIS NO</td>
-              <td><input type="text" placeholder="CHASSIS NUMBER" name="chassis-number" class="form-control" required></td>
-            </tr>
-            <tr>
-              <td scope="row">MODEL</td>
-              <td><input type="text" placeholder="MODEL" name="model" class="form-control" required></td>
-            </tr>
-            <tr>
-              <td scope="row">YEAR OF MFG</td>
-              <td><input type="text" placeholder="YEAR OF MANUFACTURE" name="year-of-manufacturing" class="form-control"
-                required></td>
-            </tr>
-            <tr>
-              <td scope="row">REGISTRATION NO</td>
-              <td><input type="text" placeholder="REGISTRATION NUMBER" name="registration-number" class="form-control" required></td>
-            </tr>
-            <tr>
-              <td scope="row">ENGINE NO</td>
-              <td><input type="text" placeholder="ENGINE NUMBER" name="engine-number" class="form-control" required></td>
-            </tr>
-            <tr>
-              <td scope="row">HP</td>
-              <td><input type="text" placeholder="HP" name="hp-hours" class="form-control" required></td>
-            </tr>
-            <tr>
-              <td scope="row">HOURS</td>
-              <td><input type="text" placeholder="HOURS" name="hp-hours" class="form-control" required></td>
-            </tr>
-            <tr>
-              <td scope="row"><label for="formFileMultiple" class="form-label">PICTURES &emsp; &emsp;</label></td>
-              <td><input class="form-control" type="file" id="formFileMultiple" name="file" multiple required></td>
-            </tr>
-          </tbody>
-        </table>
+<div class="container">
+  <div class="card">
+    <form method="post" action="{{ url_for('inventory.add_tractor')}}" enctype="multipart/form-data">
+      <div class="form-row bg-dark text-white">
+        <div class="col">
+          <label for="tractor-name">TRACTOR FEATURE</label>
         </div>
-    </div>
-    <div class="col">
-      <div class="card">
-      <table class="table-striped">
-        <tbody>
-          <legend class="bg-light text-dark">DEALER INFORMATION</legend>
-          <tr>
-            <td scope="col">BANK</td>
-            <td scope="col"><input type="text" placeholder="BANK" name="bank" class="form-control" required></td>
-          </tr>
-          <tr>
-            <td scope="row">ORIGINAL OWNER</td>
-            <td><input type="text" placeholder="ORIGINAL OWNER" name="original-owner" class="form-control" required></td>
-          </tr>
-          <tr>
-            <td scope="row">RELEASE DATE</td>
-            <td><input type="datetime-local" name="release-date-time" class="form-control" required></td>
-          </tr>
-          <tr>
-            <td scope="row">DELIVERY DATE</td>
-            <td><input type="datetime-local" name="delievery-date-time" class="form-control" required></td>
-          </tr>
-          <tr>
-            <td scope="row">BUYING GODWON</td>
-            <td><input type="text" placeholder="BUYING GODWON" name="dealer" class="form-control" required></td>
-          </tr>
-          <tr>
-            <td scope="row">STORING GODOWN</td>
-            <td><input type="text" placeholder="STORING GODOWN" name="storing-godown" class="form-control" required></td>
-          </tr>
-        </tbody>
-      </table>
-      <tr>
-        <td scope="row"></td>
-        <td></td>
-      </tr>
-      <button type="button" class="btn btn-primary btn-lg btn-block">Submit</button>
+        <div class="col">
+          <label for="tractor-name">DEALER INFO</label>
+        </div>
       </div>
-    </div>
+      <div class="form-row bg-light text-dark ">
+        <div class="col">
+          <label for="tractor-name">TRACTOR NAME</label>
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="TRACTOR NAME" name="tractor-name" required>
+        </div>
+        <div class="col">
+          <label for="tractor-name">BANK</label>
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="BANK" name="bank">
+        </div>
+      </div>
+      <div class="form-row bg-white text-dark">
+        <div class="col">
+          <label for="chassis-number">CHASSIS NUMBER</label>
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="CHASSIS NUMBER" name="chassis-number" required>
+        </div>
+        <div class="col">
+          <label for="tractor-name">ORIGINAL OWNER</label>
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="ORIGINAL OWNER" name="originl-owner">
+        </div>
+      </div>
+      <div class="form-row bg-light text-dark">
+        <div class="col">
+          <label for="model">MODEL</label>
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="MODEL" name="model">
+        </div>
+        <div class="col">
+          <label for="release-date">RELEASE DATE</label>
+        </div>
+        <div class="col">
+          <input type="datetime-local" class="form-control" placeholder="RELEASE DATE" name="release-date">
+        </div>
+      </div>
+      <div class="form-row bg-white text-dark">
+        <div class="col">
+          <label for="year-of-manufacturing">YEAR OF MANUFACTURING</label>
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="YEAR OF MANUFACTURING" name="year-of-manufacturing">
+        </div>
+        <div class="col">
+          <label for="delevery-date">DELEVERY DATE</label>
+        </div>
+        <div class="col">
+          <input type="datetime-local" class="form-control" placeholder="DELEVERY DATE" name="delevery-date">
+        </div>
+      </div>
+      <div class=" form-row bg-light text-dark">
+        <div class="col">
+          <label for="registration-number">REGISTRATION NUMBER</label>
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="REGISTRATION NUMBER" name="registration-number">
+        </div>
+        <div class=" col">
+          <label for="buying-godown">BUYING GODOWN</label>
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="BUYING GODOWN">
+        </div>
+      </div>
+      <div class="form-row bg-white text-dark">
+        <div class="col">
+          <label for="engine-number">ENGINE NUMBER</label>
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="ENGINE NUMBER" name="engine-number">
+        </div>
+        <div class="col">
+          <label for="storing-godown">STORING GODOWN</label>
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="STORING GODOWN" name="storing-godown">
+        </div>
+      </div>
+      <div class="form-row bg-light text-dark">
+        <div class="col-3">
+          <label for="hp">HP</label>
+        </div>
+        <div class="col-3">
+          <input type="text" class="form-control" placeholder="HP" name="hp">
+        </div>
+        <div class="col">
+          <input type="hidden" name="is-sold" value="false">
+        </div>
+
+      </div>
+      <div class="form-row bg-white text-dark">
+        <div class="col-3">
+          <label for="hours">HOURS</label>
+        </div>
+        <div class="col-3">
+          <input type="text" class="form-control" placeholder="HOURS" name="hours">
+        </div>
+      </div>
+      <div class="form-row bg-light text-dark">
+        <div class="col">
+          <label for="pictures">PICTURES</label>
+        </div>
+        <div class="col">
+          <input type="file" class="form-control" placeholder="PICTURES" name="pictures" multiple>
+        </div>
+        <div class="col">
+          <label>WANT TO SUBMIT?</label>
+        </div>
+        <div class="col-3">
+          <button type="submit" class="btn btn-primary px-4 float-right">ADD TRACTOR</button>
+        </div>
+
+      </div>
+    </form>
   </div>
-</form>
+</div>
+
 
 {%endblock%}
