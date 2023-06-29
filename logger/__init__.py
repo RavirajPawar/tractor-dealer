@@ -1,7 +1,9 @@
 import logging
 
+from architecture.singleton import Singleton
 
-class CustomLogger:
+
+class CustomLogger(metaclass=Singleton):
     """logger class which crates logging class object"""
 
     def __init__(self):
@@ -18,7 +20,7 @@ class CustomLogger:
 
 logger = CustomLogger().custom_logger
 
-if __name__=="__main__":
+if __name__ == "__main__":
     logger.debug("debug log")
     logger.info("info log")
     logger.warning("warn log")

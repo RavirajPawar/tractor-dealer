@@ -1,20 +1,21 @@
-from flask import (
-    Blueprint,
-    render_template,
-    request,
-    flash,
-    redirect,
-    url_for,
-    send_file,
-)
-from werkzeug.utils import secure_filename
-from connector import mongo_conn
-from constants import UPLOAD_FOLDER
 import os
-from inventory.helper import create_folder, lowercase_data
-from logger import logger
 import zipfile
 
+from flask import (
+    Blueprint,
+    flash,
+    redirect,
+    render_template,
+    request,
+    send_file,
+    url_for,
+)
+from werkzeug.utils import secure_filename
+
+from common.connector import mongo_conn
+from common.constants import upload_folder
+from inventory.helper import create_folder, lowercase_data
+from logger import logger
 
 inventory_blueprint = Blueprint(
     "inventory", __name__, template_folder="templates", static_folder="static"
@@ -33,7 +34,7 @@ def add_tractor():
             logger.info("started processing add-tractor".center(80, "^"))
             tractor_details = lowercase_data(dict(request.form))
             chassis_number = tractor_details.get("chassis-number")
-            if chassis_number in os.listdir(UPLOAD_FOLDER):
+            if chassis_number in os.listdir(upload_folder):
                 logger.warning(
                     f"redirecting to add-tractor cause {chassis_number} folder already exists"
                 )
@@ -45,7 +46,7 @@ def add_tractor():
                 if secure_filename(file.filename):
                     file.save(
                         os.path.join(
-                            UPLOAD_FOLDER,
+                            upload_folder,
                             tractor_details.get("chassis-number"),
                             "before",
                             secure_filename(file.filename),
@@ -99,7 +100,7 @@ def update_tractor(tractor=None):
         )
         # Null response check
         display_tractor = display_tractor if display_tractor else dict()
-        path = os.path.join(UPLOAD_FOLDER, tractor, "before")
+        path = os.path.join(upload_folder, tractor, "before")
         files = [os.path.join(path, file) for file in os.listdir(path)]
         files = {file: os.path.exists(file) for file in files}
         return render_template(
@@ -115,7 +116,7 @@ def update_tractor(tractor=None):
         tractor = old_chassis_number if not tractor else tractor
 
         if old_chassis_number != chassis_number:
-            if os.path.exists(os.path.join(UPLOAD_FOLDER, chassis_number)):
+            if os.path.exists(os.path.join(upload_folder, chassis_number)):
                 flash(
                     f"Denied updating chassis number from {old_chassis_number} to {chassis_number}."
                 )
@@ -123,8 +124,8 @@ def update_tractor(tractor=None):
                 return redirect(url_for("inventory.view_tractor"))
             logger.info(f"renaming tractor {old_chassis_number} folder name")
             os.rename(
-                os.path.join(UPLOAD_FOLDER, old_chassis_number),
-                os.path.join(UPLOAD_FOLDER, chassis_number),
+                os.path.join(upload_folder, old_chassis_number),
+                os.path.join(upload_folder, chassis_number),
             )
             logger.info(f"renamed tractor {chassis_number} folder name")
 
@@ -138,7 +139,7 @@ def update_tractor(tractor=None):
             if secure_filename(file.filename):
                 file.save(
                     os.path.join(
-                        UPLOAD_FOLDER,
+                        upload_folder,
                         chassis_number,
                         "before",
                         secure_filename(file.filename),
@@ -163,18 +164,18 @@ def download_zip(tractor=None):
     try:
         logger.info(f"started download-zip api for {tractor}")
         zipf = zipfile.ZipFile(
-            os.path.join(UPLOAD_FOLDER, tractor, f"{tractor}-photos.zip"),
+            os.path.join(upload_folder, tractor, f"{tractor}-photos.zip"),
             "w",
             zipfile.ZIP_DEFLATED,
         )
-        for file in os.listdir(os.path.join(UPLOAD_FOLDER, tractor, "before")):
-            zipf.write(os.path.join(UPLOAD_FOLDER, tractor, "before", file), file)
+        for file in os.listdir(os.path.join(upload_folder, tractor, "before")):
+            zipf.write(os.path.join(upload_folder, tractor, "before", file), file)
         zipf.close()
         logger.info(
-            f'created zip file at {os.path.join(UPLOAD_FOLDER, tractor, f"{tractor}-photos.zip")}'
+            f'created zip file at {os.path.join(upload_folder, tractor, f"{tractor}-photos.zip")}'
         )
         return send_file(
-            os.path.join(UPLOAD_FOLDER, tractor, f"{tractor}-photos.zip"),
+            os.path.join(upload_folder, tractor, f"{tractor}-photos.zip"),
             mimetype="zip",
             download_name=f"{tractor}-photos.zip",
             as_attachment=True,

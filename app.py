@@ -1,15 +1,21 @@
 from flask import Flask, render_template
+
+from common.connector import mongo_conn
+from config.config import DevConfig
 from inventory.inventory import inventory_blueprint
 from orders.orders import orders_blueprint
-from connector import mongo_conn
-from constants import UPLOAD_FOLDER
+from common.utils import setup_app
+from logger import logger
 
 app = Flask(__name__)
-app.config["MONGO_URI"] = "mongodb://localhost:27017/tractor_dealer?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false"
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config["SECRET_KEY"] = "Imr@nRih@nReh@n202301"
+app.config.from_object(DevConfig)
 mongo_conn.init_app(app)
 
+try:
+    setup_app()
+except:
+    logger.exception("app setup failed", exc_info=True)
+    raise
 
 # registering blueprints
 app.register_blueprint(inventory_blueprint)

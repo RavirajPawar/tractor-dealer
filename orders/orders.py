@@ -1,10 +1,12 @@
-from flask import Blueprint, render_template, request, session, redirect
-from werkzeug.utils import secure_filename
-from connector import mongo_conn
 import os
+
+from flask import Blueprint, redirect, render_template, request, session
+from werkzeug.utils import secure_filename
+
+from common.connector import mongo_conn
+from common.constants import upload_folder
 from inventory.helper import create_folder, lowercase_data
 from logger import logger
-from constants import UPLOAD_FOLDER
 
 orders_blueprint = Blueprint(
     "orders", __name__, template_folder="templates", static_folder="static"
@@ -67,7 +69,7 @@ def final_sell():
             if secure_filename(file.filename):
                 file.save(
                     os.path.join(
-                        "UPLOAD_FOLDER",
+                        upload_folder,
                         chassis_number,
                         "after",
                         "-".join([buyer_name, field, secure_filename(file.filename)]),
