@@ -1,0 +1,3 @@
+app is running in local env.
+in order to store logs this functionality is added.
+actual app log file name starts with app_time_stamp.log
