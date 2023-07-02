@@ -16,10 +16,10 @@ def create_folder(chassis_number):
         bool: True means successfully created folders.
     """
     try:
-        logger.info(f"creating_folder {upload_folder}/{chassis_number}")
+        logger.info(f"creating_folder {upload_folder}\\{chassis_number}")
         os.makedirs(os.path.join(upload_folder, chassis_number, before_sell))
         os.makedirs(os.path.join(upload_folder, chassis_number, after_sell))
-        logger.info(f"{upload_folder}/{chassis_number} has been created")
+        logger.info(f"{upload_folder}\\{chassis_number} has been created")
         return True
     except FileExistsError:
         logger.exception(f"{chassis_number} already exist")
