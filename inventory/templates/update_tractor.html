@@ -32,12 +32,14 @@
         </div>
         {% endif %}
         {% endfor %}
+        {% for key in document_field %}
         <div class="form-row">
-          <div class="col">pictures</div>
+          <div class="col">{{key}}</div>
           <div class="col">
-            <input type="file" class="form-control" name="pictures" multiple>
+            <input type="file" class="form-control" name="{{key}}" multiple>
           </div>
         </div>
+        {%endfor%}
         <div class="form-row">
           <div class="col">Sure ?</div>
           <div class="col">
@@ -49,7 +51,7 @@
   </div>
   <div class="col">
     {% for file in files %}
-      <img src="{{ url_for('.static', filename='{{file}}') }}" alt="{{file}}">
+    <img src="{{ url_for('.static', filename='{{file}}') }}" alt="{{file}}">
     {%endfor%}
   </div>
 </div>

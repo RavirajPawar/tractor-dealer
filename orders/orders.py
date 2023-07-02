@@ -4,7 +4,7 @@ from flask import Blueprint, redirect, render_template, request, session
 from werkzeug.utils import secure_filename
 
 from common.connector import mongo_conn
-from common.constants import upload_folder
+from common.constants import upload_folder, after_sell
 from inventory.helper import create_folder, lowercase_data
 from logger import logger
 
@@ -71,7 +71,7 @@ def final_sell():
                     os.path.join(
                         upload_folder,
                         chassis_number,
-                        "after",
+                        after_sell,
                         "-".join([buyer_name, field, secure_filename(file.filename)]),
                     )
                 )
