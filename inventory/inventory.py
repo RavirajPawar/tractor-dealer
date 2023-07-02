@@ -13,7 +13,7 @@ from flask import (
 from werkzeug.utils import secure_filename
 
 from common.connector import mongo_conn
-from common.constants import upload_folder
+from common.constants import upload_folder, before_sell, document_field
 from inventory.helper import create_folder, lowercase_data
 from logger import logger
 
@@ -42,20 +42,21 @@ def add_tractor():
                 return redirect(url_for("inventory.add_tractor"))
             create_folder(chassis_number)
             mongo_conn.db.stock_tractor.insert_one(tractor_details)
-            for file in request.files.getlist("pictures"):
-                if secure_filename(file.filename):
-                    file.save(
-                        os.path.join(
-                            upload_folder,
-                            tractor_details.get("chassis-number"),
-                            "before",
-                            secure_filename(file.filename),
+            for doc_field in document_field:
+                for file in request.files.getlist(doc_field):
+                    if secure_filename(file.filename):
+                        file.save(
+                            os.path.join(
+                                upload_folder,
+                                tractor_details.get("chassis-number"),
+                                before_sell,
+                                "-".join([doc_field, secure_filename(file.filename)]),
+                            )
                         )
-                    )
-                    logger.info(
-                        f"{file.filename}->{tractor_details.get('chassis-number')}"
-                    )
-            logger.info("finished processing add-tractor".center(80, "^"))
+                        logger.info(
+                            f"{file.filename}->{tractor_details.get('chassis-number')}"
+                        )
+                logger.info("finished processing add-tractor".center(80, "^"))
         except Exception as e:
             logger.exception(f"{str(e)}", exc_info=True)
     return render_template("add_tractor.html")
@@ -100,14 +101,18 @@ def update_tractor(tractor=None):
         )
         # Null response check
         display_tractor = display_tractor if display_tractor else dict()
-        path = os.path.join(upload_folder, tractor, "before")
+        path = os.path.join(upload_folder, tractor, before_sell)
         files = [os.path.join(path, file) for file in os.listdir(path)]
         files = {file: os.path.exists(file) for file in files}
         return render_template(
-            "update_tractor.html", display_tractor=display_tractor, files=files
+            "update_tractor.html",
+            display_tractor=display_tractor,
+            files=files,
+            document_field=document_field,
         )
     elif request.method == "POST":
         if not dict(request.form):  #
+            # TODO: Flash message
             return redirect("/view-tractor")
 
         update_tractor = {"$set": lowercase_data(dict(request.form))}
@@ -141,7 +146,7 @@ def update_tractor(tractor=None):
                     os.path.join(
                         upload_folder,
                         chassis_number,
-                        "before",
+                        before_sell,
                         secure_filename(file.filename),
                     )
                 )
@@ -168,8 +173,8 @@ def download_zip(tractor=None):
             "w",
             zipfile.ZIP_DEFLATED,
         )
-        for file in os.listdir(os.path.join(upload_folder, tractor, "before")):
-            zipf.write(os.path.join(upload_folder, tractor, "before", file), file)
+        for file in os.listdir(os.path.join(upload_folder, tractor, before_sell)):
+            zipf.write(os.path.join(upload_folder, tractor, before_sell, file), file)
         zipf.close()
         logger.info(
             f'created zip file at {os.path.join(upload_folder, tractor, f"{tractor}-photos.zip")}'

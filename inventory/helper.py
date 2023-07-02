@@ -1,6 +1,6 @@
 import os
 from logger import logger
-from common.constants import upload_folder
+from common.constants import upload_folder, before_sell, after_sell
 
 
 def create_folder(chassis_number):
@@ -16,10 +16,10 @@ def create_folder(chassis_number):
         bool: True means successfully created folders.
     """
     try:
-        logger.info(f"creating_folder {chassis_number}")
-        os.makedirs(os.path.join(upload_folder, chassis_number, "before"))
-        os.makedirs(os.path.join(upload_folder, chassis_number, "after"))
-        logger.info(f"{chassis_number} has been created")
+        logger.info(f"creating_folder {upload_folder}/{chassis_number}")
+        os.makedirs(os.path.join(upload_folder, chassis_number, before_sell))
+        os.makedirs(os.path.join(upload_folder, chassis_number, after_sell))
+        logger.info(f"{upload_folder}/{chassis_number} has been created")
         return True
     except FileExistsError:
         logger.exception(f"{chassis_number} already exist")
