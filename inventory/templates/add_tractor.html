@@ -94,12 +94,11 @@
         </div>
         <div class="col">
           <select class="form-control" name="storing-godown" id="storing-godown">
-            <option value="Rui">Rui</option>
-            <option value="Kavalapur">Kavalapur</option>
-            <option value="Mhaishal">Mhaishal</option>
-            <option value="Palus">Palus</option>
-            <option value="Palus">Kudachi</option>
+            {%for godown in godown_list%}
+            <option value={{godown}}>{{godown}}</option>
+            {%endfor%}
           </select>
+
         </div>
       </div>
   </div>
@@ -193,8 +192,10 @@
 <div class="form-row bg-light text-dark">
   <div class="col-3">
     <input type="hidden" name="is-sold" value="false">
+    <label>RC Pictures</label>
   </div>
   <div class="col-3">
+    <input type="file" class="form-control" name="rc" multiple>
   </div>
   <div class="col">
     <label>WANT TO SUBMIT?</label>

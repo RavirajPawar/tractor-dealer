@@ -13,7 +13,7 @@ from flask import (
 from werkzeug.utils import secure_filename
 
 from common.connector import mongo_conn
-from common.constants import upload_folder, before_sell, document_field
+from common.constants import upload_folder, before_sell, document_field, godown_list
 from inventory.helper import create_folder, lowercase_data
 from logger import logger
 
@@ -55,7 +55,10 @@ def add_tractor():
         except Exception as e:
             logger.exception(f"{str(e)}", exc_info=True)
     logger.info("got GET /add-tractor".center(80, "^"))
-    return render_template("add_tractor.html")
+    return render_template(
+        "add_tractor.html",
+        godown_list=godown_list,
+    )
 
 
 @inventory_blueprint.route("/view-tractor", methods=["GET"])
