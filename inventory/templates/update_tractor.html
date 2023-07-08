@@ -25,7 +25,11 @@
         </div>
         {% elif "old-chassis-number" not in key %}
         <div class="form-row">
+          {% if value %}
           <div class="col">{{key}}</div>
+          {%else%}
+          <div class="col bg-danger">{{key}}</div>
+          {%endif%}
           <div class="col">
             <input type="text" class="form-control" value="{{value}}" name="{{key}}">
           </div>
@@ -34,7 +38,11 @@
         {% endfor %}
         {% for key in document_field %}
         <div class="form-row">
+          {% if document_report[key]%}
           <div class="col">{{key}}</div>
+          {%else%}
+          <div class="col bg-danger">{{key}}</div>
+          {%endif%}
           <div class="col">
             <input type="file" class="form-control" name="{{key}}" multiple>
           </div>
@@ -50,13 +58,43 @@
     </div>
   </div>
   <div class="col">
-    {% for file in files %}
-    <img src="{{ url_for('.static', filename='{{file}}') }}" alt="{{file}}">
-    {%endfor%}
+    <div>
+      <a href="{{ url_for('inventory.download_zip', tractor=display_tractor['chassis-number'])}}" role="button"
+        class="btn btn-dark btn-block">
+        DOWNLOAD ZIP
+      </a>
+    </div>
+    <div>
+      <h1>Missing documents</h1>
+      <ul>
+        {% for doc, files in document_report.items() %}
+        {% if not files %}
+        <li>{{doc}}</li>
+        {%endif%}
+        {%endfor%}
+      </ul>
+    </div>
+    <div>
+      <h1>Uploaded documents</h1>
+      {% for doc, files in document_report.items() %}
+      {% if files %}
+      <li>{{doc}}
+        <ol>
+          {%for file in files%}
+          <li>{{file}}</li>
+          {%endfor%}
+        </ol>
+
+      </li>
+
+      {%endif%}
+      {%endfor%}
+    </div>
+    <div>
+      <a href="{{ url_for('inventory.download_zip', tractor=display_tractor['chassis-number'])}}" role="button"
+        class="btn btn-dark btn-block">
+        DOWNLOAD ZIP
+      </a>
+    </div>
   </div>
-</div>
-
-
-
-
-{%endblock%}
+  {%endblock%}

@@ -101,14 +101,21 @@ def update_tractor(tractor=None):
         # Null response check
         display_tractor = display_tractor if display_tractor else dict()
         path = os.path.join(upload_folder, tractor, before_sell)
-        files = [os.path.join(path, file) for file in os.listdir(path)]
-        files = {file: os.path.exists(file) for file in files}
+        files = [file for file in os.listdir(path)]
+        document_report = dict()
+        for doc in document_field:
+            document_report[doc] = list()
+            for file in files:
+                if file.startswith(doc):
+                    document_report[doc].append(file)
+
         logger.info(f"finished GET /update-tractor/{tractor}".center(80, "^"))
         return render_template(
             "update_tractor.html",
             display_tractor=display_tractor,
             files=files,
             document_field=document_field,
+            document_report=document_report,
         )
     elif request.method == "POST":
         logger.info(f"processing POST /update-tractor/{tractor}".center(80, "^"))
