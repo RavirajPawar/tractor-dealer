@@ -8,6 +8,6 @@ https://stackoverflow.com/questions/28568687/send-with-multiple-csvs-using-flask
 
 #1 view_tractor: chassis_number replace year of manufacturing
 #2 /sell-tractor: not required field for documents. text fileds are required
-#3 selling price, advance, pending amount, agent name, selling-delivery-note, sold place <drop down>
+#3 selling price, advance, pending amount, agent name, selling-delivery-note, sold place <drop down>, Selling date
 #4 PUC, NOC, from sell tractor remove
 #5 sold tractor filter sold place, user name, tractor, model, chassis_number
