@@ -10,6 +10,8 @@
                     {% for key in keys%}
                     <th scope="row">{{key}}</th>
                     {% endfor %}
+                    <th scope="row">download zip</th>
+                    <th scope="row">update </th>
                 </tr>
             </thead>
             <tbody>
@@ -19,6 +21,18 @@
                     {% for key in keys%}
                     <td>{{tractor[key]}}</td>
                     {% endfor %}
+                    <td>
+                        <a href="{{ url_for('inventory.download_zip', tractor=tractor['chassis-number'])}}"
+                            role="button" class="btn btn-dark btn-block">
+                            DOWNLOAD ZIP
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('orders.update_sold_tractor', tractor=tractor['chassis-number'])}}"
+                            role="button" class="btn btn-info btn-block">
+                            UPDATE INFO
+                        </a>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

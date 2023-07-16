@@ -111,3 +111,10 @@ def sold_tractor():
     )
     sold_tractor = [item for item in result]
     return render_template("sold_tractor.html", sold_tractor=sold_tractor)
+
+
+@orders_blueprint.route(
+    "/update-sold-tractor/<string:tractor>/", methods=["GET", "POST"]
+)
+def update_sold_tractor(tractor=None):
+    return render_template("update_sold_tractor.html")
