@@ -71,7 +71,6 @@ def sell_tractor(tractor=None):
 
 @orders_blueprint.route("/final-sell", methods=["POST"])
 def final_sell():
-    breakpoint()
     chassis_number = request.form.get("chassis-number")
     buyer_name = request.form.get("buyer-name", "default")
     update_tractor = {"$set": lowercase_data(dict(request.form))}
@@ -99,7 +98,16 @@ def final_sell():
 @orders_blueprint.route("/sold-tractor", methods=["GET", "POST"])
 def sold_tractor():
     result = mongo_conn.db.stock_tractor.find(
-        {"is-sold": "true"}, {"_id": 0, "is-sold": 0}
+        {"is-sold": "true"},
+        {
+            "tractor-name": 1,
+            "model": 1,
+            "chassis-number": 1,
+            "selling-godown": 1,
+            "buyer-name": 1,
+            "contact": 1,
+            "_id": 0,
+        },
     )
     sold_tractor = [item for item in result]
     return render_template("sold_tractor.html", sold_tractor=sold_tractor)

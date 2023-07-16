@@ -10,4 +10,4 @@ DONE #1 view_tractor: chassis_number replace year of manufacturing
 DONE #2 /sell-tractor: not required field for documents. text fileds are required
 DONE #3 selling price, advance, pending amount, agent name, selling-delivery-note, sold place <drop down>, Selling date
 DONE #4 PUC, NOC, from sell tractor remove
-#5 sold tractor filter sold place, user name, tractor, model, chassis_number
+DONE #5 sold tractor filter sold place, user name, tractor, model, chassis_number
