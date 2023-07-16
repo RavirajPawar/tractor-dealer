@@ -7,6 +7,7 @@ from common.connector import mongo_conn
 from common.constants import upload_folder, after_sell
 from inventory.helper import create_folder, lowercase_data
 from logger import logger
+from common.constants import before_sell, document_field, file_connector, godown_list
 
 orders_blueprint = Blueprint(
     "orders", __name__, template_folder="templates", static_folder="static"
@@ -23,29 +24,38 @@ def sell_tractor(tractor=None):
         )
         if not result:  # if result not found
             result = dict()
-
+        # breakpoint()
+        path = os.path.join(upload_folder, tractor, before_sell)
+        files = [file for file in os.listdir(path)]
+        for doc in document_field:
+            result[doc] = ""
+            for file in files:
+                if file.startswith(doc):
+                    result[doc] += file
+                    result[doc] += file_connector
         customer_details = {
             "buyer-name": "text",
             "address": "text",
             "contact": "text",
             "wintness": "text",
             "witness-contact": "text",
-            "aadhar-card": "file",
+            "real-selling-price": "text",
+            "advance": "text",
+            "pending-amount": "text",
+            "agent-name": "text",
+            "sell-time-custom-note": "text",
             "pan-card": "file",
             "7-12": "file",
-            "PUC": "file",
-            "RC": "file",
-            "insurance": "file",
-            "NOC-delivery": "file",
-            "Sell-photo": "file",
+            "selling-delivery-note": "file",
+            "sell-photo": "file",
         }
-        keys = list(zip(result.keys(), customer_details.keys()))
         return render_template(
             "cart_tractor.html",
             tractor=tractor,
             result=result,
             customer_details=customer_details,
-            keys=keys,
+            document_field=document_field,
+            godown_list=godown_list,
         )
 
     if not tractor:
@@ -61,6 +71,7 @@ def sell_tractor(tractor=None):
 
 @orders_blueprint.route("/final-sell", methods=["POST"])
 def final_sell():
+    breakpoint()
     chassis_number = request.form.get("chassis-number")
     buyer_name = request.form.get("buyer-name", "default")
     update_tractor = {"$set": lowercase_data(dict(request.form))}

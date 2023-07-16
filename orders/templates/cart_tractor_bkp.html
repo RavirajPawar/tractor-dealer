@@ -1,0 +1,36 @@
+{%extends 'orders_layout.html'%}
+
+{%block body%}
+<div class="container">
+    {% if not result %}
+    <h1>COULD NOT FETCH DATA AND NEW TABLE FOR SELL {{tractor}}</h1>
+    {% else %}
+    <div class="card">
+        <form method="post" action="{{ url_for('orders.final_sell')}}" enctype="multipart/form-data">
+            {% for key, value in result.items() %}
+            <div class="form-row bg-light text-dark ">
+                <div class="col">
+                    <label>{{key}}</label>
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control" name={{key}} value="{{value}}" readonly>
+                </div>
+            </div>
+            {% endfor %}
+            {% for key, value in customer_details.items() %}
+            <div class="form-row bg-light text-dark ">
+                <div class="col">
+                    <label>{{key}}</label>
+                </div>
+                <div class="col">
+                    <input type={{value}} class="form-control">
+                </div>
+            </div>
+            {% endfor %}
+        </form>
+
+    </div>
+    {% endif %}
+</div>
+
+{%endblock%}
