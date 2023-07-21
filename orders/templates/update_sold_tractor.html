@@ -3,6 +3,99 @@
 {%block body%}
 
 <div class="row">
+  <div class="col">
+    <div class="card">
+      <h5 class="card-header text-center">Update Sold tractor inforation</h5>
+      <form enctype="multipart/form-data" method="POST">
+        {% for key, value in update_sold_tractor.items() %}
+        {% if key == "chassis-number" %}
+        <div class="form-row">
+          <div class="col">{{key}}</div>
+          <div class="col">
+            <input type="text" class="form-control" value="{{value}}" name="{{key}}" readonly>
+          </div>
+        </div>
+        {% else %}
+        <div class="form-row">
+          {% if value %}
+          <div class="col">{{key}}</div>
+          {%else%}
+          <div class="col bg-danger">{{key}}</div>
+          {%endif%}
+          <div class="col">
+            <input type="text" class="form-control" value="{{value}}" name="{{key}}">
+          </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% for key in before_sell_doc_report %}
+        <div class="form-row">
+          {% if before_sell_doc_report[key]%}
+          <div class="col">{{key}}</div>
+          {%else%}
+          <div class="col bg-danger">{{key}}</div>
+          {%endif%}
+          <div class="col">
+            <input type="file" class="form-control" name="{{key}}" multiple>
+          </div>
+        </div>
+        {%endfor%}
+        {% for key in after_sell_doc_report %}
+        <div class="form-row">
+          {% if after_sell_doc_report[key]%}
+          <div class="col">{{key}}</div>
+          {%else%}
+          <div class="col bg-danger">{{key}}</div>
+          {%endif%}
+          <div class="col">
+            <input type="file" class="form-control" name="{{key}}" multiple>
+          </div>
+        </div>
+        {%endfor%}
+        <div class="form-row">
+          <div class="col">Sure ?</div>
+          <div class="col">
+            <input class="btn btn-primary btn-block" style="text-align:center" type="submit" value="Update TRACTOR">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="col">
+    <div>
+      <a href="{{ url_for('inventory.download_zip', tractor=update_sold_tractor['chassis-number'])}}" role="button"
+        class="btn btn-dark btn-block">
+        DOWNLOAD ZIP
+      </a>
+    </div>
+    <div>
+      <h5>Missing Before sell documents</h5>
+      <ul>
+        {% for doc, files in before_sell_doc_report.items() %}
+        {% if not files %}
+        <li>{{doc}}</li>
+        {%endif%}
+        {%endfor%}
+      </ul>
+    </div>
+    <div>
+      <h5>Missing After sell documents</h5>
+      <ul>
+        {% for doc, files in after_sell_doc_report.items() %}
+        {% if not files %}
+        <li>{{doc}}</li>
+        {%endif%}
+        {%endfor%}
+      </ul>
+    </div>
+
+    <div>
+      <a href="{{ url_for('inventory.download_zip', tractor=update_sold_tractor['chassis-number'])}}" role="button"
+        class="btn btn-dark btn-block">
+        DOWNLOAD ZIP
+      </a>
+    </div>
+  </div>
 </div>
-  
-  {%endblock%}
+
+{%endblock%}

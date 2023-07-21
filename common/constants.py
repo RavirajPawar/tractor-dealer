@@ -2,7 +2,7 @@ upload_folder = r"static\uploads"
 before_sell = "before-sell-documents"
 after_sell = "after-sell-documents"
 file_connector = ", "
-document_field = [
+buy_document_field = [
     "tractor-pictures",
     "noc",
     "hsrp",
@@ -11,7 +11,12 @@ document_field = [
     "release-doc",
     "rc",
 ]
-
+sell_document_field = [
+    "pan-card",
+    "7-12",
+    "selling-delivery-note",
+    "sell-photo",
+]
 godown_list = [
     "Rui",
     "Kavalapur",

@@ -13,7 +13,13 @@ from flask import (
 from werkzeug.utils import secure_filename
 
 from common.connector import mongo_conn
-from common.constants import upload_folder, before_sell, document_field, godown_list
+from common.constants import (
+    upload_folder,
+    before_sell,
+    buy_document_field,
+    godown_list,
+    after_sell,
+)
 from inventory.helper import create_folder, lowercase_data
 from logger import logger
 
@@ -40,7 +46,7 @@ def add_tractor():
                 return redirect(url_for("inventory.add_tractor"))
             create_folder(chassis_number)
             mongo_conn.db.stock_tractor.insert_one(tractor_details)
-            for doc_field in document_field:
+            for doc_field in buy_document_field:
                 for file in request.files.getlist(doc_field):
                     if secure_filename(file.filename):
                         file_path = os.path.join(
@@ -103,7 +109,7 @@ def update_tractor(tractor=None):
         path = os.path.join(upload_folder, tractor, before_sell)
         files = [file for file in os.listdir(path)]
         document_report = dict()
-        for doc in document_field:
+        for doc in buy_document_field:
             document_report[doc] = list()
             for file in files:
                 if file.startswith(doc):
@@ -114,7 +120,7 @@ def update_tractor(tractor=None):
             "update_tractor.html",
             display_tractor=display_tractor,
             files=files,
-            document_field=document_field,
+            document_field=buy_document_field,
             document_report=document_report,
         )
     elif request.method == "POST":
@@ -148,7 +154,7 @@ def update_tractor(tractor=None):
         )
         logger.info(f"finished updating tractor {chassis_number} in DB")
 
-        for doc_field in document_field:
+        for doc_field in buy_document_field:
             for file in request.files.getlist(doc_field):
                 if secure_filename(file.filename):
                     file_path = os.path.join(
@@ -181,8 +187,9 @@ def download_zip(tractor=None):
             "w",
             zipfile.ZIP_DEFLATED,
         )
-        for file in os.listdir(os.path.join(upload_folder, tractor, before_sell)):
-            zipf.write(os.path.join(upload_folder, tractor, before_sell, file), file)
+        for sub_folder in [before_sell, after_sell]:
+            for file in os.listdir(os.path.join(upload_folder, tractor, sub_folder)):
+                zipf.write(os.path.join(upload_folder, tractor, sub_folder, file), file)
         zipf.close()
         logger.info(
             f'created zip file at {os.path.join(upload_folder, tractor, f"{tractor}-documents.zip")}'
