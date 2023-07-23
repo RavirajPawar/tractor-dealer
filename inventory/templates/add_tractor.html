@@ -1,29 +1,44 @@
 {%extends 'inventory_layout.html'%}
-
 {%block body%}
+
 <div class="container">
   <div class="card">
     <form method="post" action="{{ url_for('inventory.add_tractor')}}" enctype="multipart/form-data">
       <div class="form-row bg-dark text-white">
         <div class="col">
-          <label for="tractor-name">TRACTOR FEATURE</label>
+          <label for="tractor-name">TRACTOR FEATURE</label> -->
         </div>
         <div class="col">
-          <label for="tractor-name">DEALER INFO</label>
+          <label for="tractor-name">FEATURE</label>
         </div>
       </div>
-      <div class="form-row bg-light text-dark ">
-        <div class="col">
+      <div class="form-row bg-white text-dark ">
+        <div class="col-3">
           <label for="tractor-name">TRACTOR NAME</label>
         </div>
-        <div class="col">
+        <div class="col-3">
           <input type="text" class="form-control" placeholder="TRACTOR NAME" name="tractor-name" required>
         </div>
+          <div class="col-3">
+            <label for="model">MODEL</label>
+          </div>
+          <div class="col-3">
+            <input type="text" class="form-control" placeholder="MODEL" name="model">
+          </div>
+        </div>
+      </div>
+      <div class="form-row bg-light text-dark">
         <div class="col">
-          <label for="tractor-name">BANK</label>
+          <label for="registration-number">REGISTRATION NUMBER</label>
         </div>
         <div class="col">
-          <input type="text" class="form-control" placeholder="BANK" name="bank">
+          <input type="text" class="form-control" placeholder="REGISTRATION NUMBER" name="registration-number">
+        </div>
+        <div class="col-3">
+          <label>Selling Price</label>
+        </div>
+        <div class="col-3">
+          <input type="text" class="form-control" placeholder="Selling price" name="selling-price">
         </div>
       </div>
       <div class="form-row bg-white text-dark">
@@ -34,60 +49,47 @@
           <input type="text" class="form-control" placeholder="CHASSIS NUMBER" name="chassis-number" required>
         </div>
         <div class="col">
-          <label for="tractor-name">ORIGINAL OWNER</label>
+          <label for="engine-number">ENGINE NUMBER</label>
         </div>
         <div class="col">
-          <input type="text" class="form-control" placeholder="ORIGINAL OWNER" name="original-owner">
+          <input type="text" class="form-control" placeholder="ENGINE NUMBER" name="engine-number">
         </div>
       </div>
       <div class="form-row bg-light text-dark">
-        <div class="col">
-          <label for="model">MODEL</label>
+        <div class="col-3">
+          <label for="hp">HP</label>
         </div>
-        <div class="col">
-          <input type="text" class="form-control" placeholder="MODEL" name="model">
+        <div class="col-3">
+          <input type="text" class="form-control" placeholder="HP" name="hp">
         </div>
-        <div class="col">
-          <label for="release-date">RELEASE DATE</label>
+        <div class="col-3">
+          <label for="hours">HOURS</label>
         </div>
-        <div class="col">
-          <input type="datetime-local" class="form-control" placeholder="RELEASE DATE" name="release-date">
+        <div class="col-3">
+          <input type="text" class="form-control" placeholder="HOURS" name="hours">
         </div>
       </div>
       <div class="form-row bg-white text-dark">
-        <div class="col">
-          <label for="year-of-manufacturing">YEAR OF MANUFACTURING</label>
+        <div class="col-3">
+          <input type="hidden" name="is-sold" value="false">
+          <label for="hp">Auctioneer</label>
+        </div>
+        <div class="col-3">
+          <input type="text" class="form-control" placeholder="Auctioneer" name="auctioneer">
         </div>
         <div class="col">
-          <input type="text" class="form-control" placeholder="YEAR OF MANUFACTURING" name="year-of-manufacturing">
+          <label for="tractor-name">BANK</label>
         </div>
         <div class="col">
-          <label for="delivery-date">DELIVERY DATE</label>
-        </div>
-        <div class="col">
-          <input type="datetime-local" class="form-control" placeholder="DELIVERY DATE" name="delivery-date">
+          <input type="text" class="form-control" placeholder="BANK" name="bank">
         </div>
       </div>
-      <div class=" form-row bg-light text-dark">
-        <div class="col">
-          <label for="registration-number">REGISTRATION NUMBER</label>
-        </div>
-        <div class="col">
-          <input type="text" class="form-control" placeholder="REGISTRATION NUMBER" name="registration-number">
-        </div>
+      <div class="form-row bg-light text-dark">
         <div class=" col">
           <label for="buying-godown">BUYING GODOWN</label>
         </div>
         <div class="col">
           <input type="text" class="form-control" placeholder="BUYING GODOWN" name="buying-godown">
-        </div>
-      </div>
-      <div class="form-row bg-white text-dark">
-        <div class="col">
-          <label for="engine-number">ENGINE NUMBER</label>
-        </div>
-        <div class="col">
-          <input type="text" class="form-control" placeholder="ENGINE NUMBER" name="engine-number">
         </div>
         <div class="col">
           <label for="storing-godown">STORING GODOWN</label>
@@ -101,112 +103,107 @@
 
         </div>
       </div>
+      <div class="form-row bg-white text-dark">
+        <div class="col">
+          <label for="tractor-name">ORIGINAL OWNER</label>
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="ORIGINAL OWNER" name="original-owner">
+        </div>
+        <div class="col-3">
+          <label>custom note</label>
+        </div>
+        <div class="col-3">
+          <input type="text" class="form-control" placeholder="custom note" name="custom-note">
+        </div>
+      </div>
+      <div class="form-row bg-light text-dark">
+        <div class="col">
+          <label for="year-of-manufacturing">YEAR OF MANUFACTURING</label>
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="YEAR OF MANUFACTURING" name="year-of-manufacturing">
+        </div>
+        <div class="col">
+          <label>Year of Registration</label>
+        </div>
+        <div class="col">
+          <input type="datetime-local" class="form-control" name="year-of-registration-date">
+        </div>
+      </div>
+      <div class="form-row bg-white text-dark">
+        <div class="col">
+          <label for="release-date">RELEASE DATE</label>
+        </div>
+        <div class="col">
+          <input type="datetime-local" class="form-control" placeholder="RELEASE DATE" name="release-date">
+        </div>
+        <div class="col">
+          <label for="delivery-date">DELIVERY DATE</label>
+        </div>
+        <div class="col">
+          <input type="datetime-local" class="form-control" placeholder="DELIVERY DATE" name="delivery-date">
+        </div>
+      </div>
+      <div class="form-row bg-light text-dark">
+        <div class="col-3">
+          <label for="noc">NOC</label>
+        </div>
+        <div class="col-3">
+          <input type="file" class="form-control" placeholder="NOC" name="noc" multiple>
+        </div>
+        <div class="col-3">
+          <label for="puc">PUC</label>
+        </div>
+        <div class="col-3">
+          <input type="file" class="form-control" placeholder="PUC" name="puc" multiple>
+        </div>
+      </div>
+      <div class="form-row bg-white text-dark">
+        <div class="col-3">
+          <label for="insurance">INSURANCE</label>
+        </div>
+        <div class="col-3">
+          <input type="file" class="form-control" placeholder="insurance" name="insurance" multiple>
+        </div>
+        <div class="col-3">
+          <label for="hsrp">HSRP</label>
+        </div>
+        <div class="col-3">
+          <input type="file" class="form-control" placeholder="hsrp" name="hsrp" multiple>
+        </div>
+      </div>
+      <div class="form-row bg-light text-dark">
+        <div class="col">
+          <input type="hidden" name="is-sold" value="false">
+          <label>RC Pictures</label>
+        </div>
+        <div class="col-3">
+          <input type="file" class="form-control" name="rc" multiple>
+        </div>
+        <div class="col-3">
+          <label>Tractor Pictures</label>
+        </div>
+        <div class="col-3">
+          <input type="file" class="form-control" name="tractor-pictures" multiple>
+        </div>
+      </div>
+      <div class="form-row bg-white text-dark">
+        <div class="col">
+          <label>Release Doc</label>
+        </div>
+        <div class="col">
+          <input type="file" class="form-control" placeholder="release doc from back" name="release-doc" multiple>
+        </div>
+        <div class="col">
+          <label>WANT TO SUBMIT?</label>
+        </div>
+        <div class="col">
+          <button type="submit" class="btn btn-primary px-4 float-right">ADD TRACTOR</button>
+        </div>
+      </div>
+    </form>
   </div>
-</div>
-<div class="form-row bg-light text-dark">
-  <div class="col-3">
-    <label for="hp">HP</label>
-  </div>
-  <div class="col-3">
-    <input type="text" class="form-control" placeholder="HP" name="hp">
-  </div>
-  <div class="col-3">
-    <input type="hidden" name="is-sold" value="false">
-    <label for="hp">Auctioneer</label>
-  </div>
-  <div class="col-3">
-    <input type="text" class="form-control" placeholder="Auctioneer" name="auctioneer">
-  </div>
-
-</div>
-<div class="form-row bg-white text-dark">
-  <div class="col-3">
-    <label for="hours">HOURS</label>
-  </div>
-  <div class="col-3">
-    <input type="text" class="form-control" placeholder="HOURS" name="hours">
-  </div>
-  <div class="col">
-    <label>Year of Registration</label>
-  </div>
-  <div class="col">
-    <input type="datetime-local" class="form-control" name="year-of-registration-date">
-  </div>
-</div>
-<div class="form-row bg-white text-dark">
-  <div class="col-3">
-    <label for="noc">NOC</label>
-  </div>
-  <div class="col-3">
-    <input type="file" class="form-control" placeholder="NOC" name="noc" multiple>
-  </div>
-  <div class="col-3">
-    <label for="insurance">INSURANCE</label>
-  </div>
-  <div class="col-3">
-    <input type="file" class="form-control" placeholder="insurance" name="insurance" multiple>
-  </div>
-</div>
-<div class="form-row bg-white text-dark">
-  <div class="col-3">
-    <label for="puc">PUC</label>
-  </div>
-  <div class="col-3">
-    <input type="file" class="form-control" placeholder="PUC" name="puc" multiple>
-  </div>
-  <div class="col-3">
-    <label for="hsrp">HSRP</label>
-  </div>
-  <div class="col-3">
-    <input type="file" class="form-control" placeholder="hsrp" name="hsrp" multiple>
-  </div>
-</div>
-<div class="form-row bg-white text-dark">
-  <div class="col-3">
-    <label>Release Doc</label>
-  </div>
-  <div class="col-3">
-    <input type="file" class="form-control" placeholder="release doc from back" name="release-doc" multiple>
-  </div>
-  <div class="col-3">
-    <label>custom note</label>
-  </div>
-  <div class="col-3">
-    <input type="text" class="form-control" placeholder="custom note" name="custom-note">
-  </div>
-</div>
-<div class="form-row bg-light text-dark">
-  <div class="col-3">
-    <label>Selling Price</label>
-  </div>
-  <div class="col-3">
-    <input type="text" class="form-control" placeholder="Selling price" name="selling-price">
-  </div>
-  <div class="col-3">
-    <label>Tractor Pictures</label>
-  </div>
-  <div class="col-3">
-    <input type="file" class="form-control" name="tractor-pictures" multiple>
-  </div>
-</div>
-<div class="form-row bg-light text-dark">
-  <div class="col-3">
-    <input type="hidden" name="is-sold" value="false">
-    <label>RC Pictures</label>
-  </div>
-  <div class="col-3">
-    <input type="file" class="form-control" name="rc" multiple>
-  </div>
-  <div class="col">
-    <label>WANT TO SUBMIT?</label>
-  </div>
-  <div class="col-3">
-    <button type="submit" class="btn btn-primary px-4 float-right">ADD TRACTOR</button>
-  </div>
-</div>
-</form>
-</div>
 </div>
 
-
-{%endblock%}
+{%endblock%} -->
