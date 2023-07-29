@@ -1,47 +1,133 @@
 {%extends 'orders_layout.html'%}
 
 {%block body%}
-<div class="container">
-    {% if not result %}
-    <h1>COULD NOT FETCH DATA AND NEW TABLE FOR SELL {{tractor}}</h1>
-    {% else %}
-    <div class="card">
-        <form method="post" action="{{ url_for('orders.final_sell')}}" enctype="multipart/form-data">
-            {% for mute_key, buyer_key in keys %}
-            <div class="form-row bg-light text-dark ">
-                <div class="col">
-                    <label for={{mute_key}}>{{mute_key.upper()}}</label>
-                </div>
-                <div class="col">
-                    <input type="text" class="form-control" value={{result[mute_key]}} name={{mute_key}} readonly>
-                </div>
-                <div class="col">
-                    <label for={{buyer_key}}>{{buyer_key.upper()}}</label>
-                </div>
-                <div class="col">
-                    {% if customer_details[buyer_key]=="file" %}
-                    <input type="{{customer_details[buyer_key]}}" class="form-control" name="{{buyer_key}}" multiple required>
-                    {% else %}
-                    <input type="{{customer_details[buyer_key]}}" class="form-control" name="{{buyer_key}}" required>
-                    {% endif %}
-                </div>
-            </div>
-            {% endfor %}
-            <div class="form-row bg-light text-dark ">
-                <div class="col"></div>
-                <div class="col">
-                    <input type="hidden" name="is-sold" value="true">
-                </div>
-                <div class="col">
-                    <label for={{mute_key}}>CONFIRM</label>
-                </div>
-                <div class="col">
-                    <button type="submit" class="btn btn-primary btn-block">SELL TRACTOR</button>
-                </div>
-            </div>
-        </form>
+<div class="row mb-4">
+    <div class="col-lg-8 mx-auto text-center">
+        <p class="lead mb-0">processing selling tractor of
+            <strong>{{result["tractor-name"]}} model {{result["model"]}}</strong>
+        </p>
     </div>
-    {% endif %}
 </div>
+<div class="row">
+    <div class="col mx-auto">
+        <div class="bg-white rounded-lg shadow-sm p-5">
+            <!-- form tabs -->
+            <ul role="tablist" class="nav bg-light nav-pills rounded-pill nav-fill mb-3">
+                <li class="nav-item">
+                    <a data-toggle="pill" href="#nav-tab-existing-info" class="nav-link active rounded-pill">
+                        <i class="fa fa-credit-card"></i>
+                        Existing Info
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a data-toggle="pill" href="#nav-tab-existing-media-info" class="nav-link rounded-pill">
+                        <i class="fa fa-paypal"></i>
+                        Existing Documents
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a data-toggle="pill" href="#nav-tab-tractor-buyer-info" class="nav-link rounded-pill">
+                        <i class="fa fa-university"></i>
+                        Tractor Buyer Info
+                    </a>
+                </li>
+            </ul>
+            <!-- End -->
+
+
+            <!-- form content -->
+            <div class="tab-content">
+
+                <!-- existing info-->
+                <div id="nav-tab-existing-info" class="tab-pane fade show active">
+                    {% for key, value in result.items() %}
+                    {%if key not in document_field%}
+                    <div class="form-row bg-light text-dark ">
+                        <div class="col">
+                            <label>{{key}}</label>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" name={{key}} value="{{value}}" readonly>
+                        </div>
+                    </div>
+                    {%endif%}
+
+                    {% endfor %}
+                </div>
+                <!-- End -->
+
+                <!-- existing media info -->
+                <div id="nav-tab-existing-media-info" class="tab-pane fade">
+                    {% for key, value in result.items() %}
+                    {%if key in document_field%}
+                    <div class="form-row bg-light text-dark ">
+                        <div class="col">
+                            <label>{{key}}</label>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" name={{key}} value="{{value}}" readonly>
+                        </div>
+                    </div>
+                    {%endif%}
+                    {% endfor %}
+                </div>
+                <!-- End -->
+
+                <!--tractor buyer info -->
+
+                <div id="nav-tab-tractor-buyer-info" class="tab-pane fade">
+                    <form method="post" action="{{ url_for('orders.final_sell')}}" enctype="multipart/form-data">
+                        {% for key, value in customer_details.items() %}
+                        <div class="form-row bg-light text-dark ">
+                            <div class="col">
+                                <label>{{key}}</label>
+                            </div>
+                            <div class="col">
+                                <input type={{value}} class="form-control" name="{{key}}">
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <div class="form-row bg-light text-dark ">
+                            <div class="col">
+                                <label for="selling-godown">selling godown</label>
+                            </div>
+                            <div class="col">
+                                <select class="form-control" name="selling-godown" id="selling-godown">
+                                    {%for godown in godown_list%}
+                                    <option value={{godown}}>{{godown}}</option>
+                                    {%endfor%}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row bg-light text-dark ">
+                            <div class="col">
+                                <label>sold date</label>
+                            </div>
+                            <div class="col">
+                                <input type="datetime-local" class="form-control" name="sold-date">
+                            </div>
+                        </div>
+                        <div class="form-row bg-light text-dark ">
+                            <div class="col">
+                                <input type="hidden" value="true" name="is-sold">
+                            </div>
+                            <div class="col">
+                                <input type="hidden" value={{result["chassis-number"]}} name="chassis-number">
+                            </div>
+                        </div>
+                        <button type="submit" class="subscribe btn btn-primary btn-block rounded-pill shadow-sm">
+                            Confirm </button>
+                    </form>
+                </div>
+
+                <!-- End -->
+
+            </div>
+            <!-- End -->
+
+        </div>
+    </div>
+</div>
+
 
 {%endblock%}

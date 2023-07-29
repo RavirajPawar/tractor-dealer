@@ -10,7 +10,7 @@
           <th scope="row">#</th>
           <th scope="row">TRACTOR NAME</th>
           <th scope="row">TRACTOR MODEL</th>
-          <th scope="row">YEAR OF MFG</th>
+          <th scope="row">CHASSIS NUMBER</th>
           <th scope="row">DOWNLOAD PHOTOS</th>
           <th scope="row">UPDATE INFO</th>
 
@@ -22,7 +22,7 @@
           <td>{{loop.index}}</td>
           <td>{{item["tractor-name"]}}</td>
           <td>{{item["model"]}}</td>
-          <td>{{item["year-of-manufacturing"]}}</td>
+          <td>{{item["chassis-number"]}}</td>
           <td>
             <a href="{{ url_for('inventory.download_zip', tractor=item['chassis-number'])}}" role="button"
               class="btn btn-dark btn-block">

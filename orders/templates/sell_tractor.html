@@ -9,7 +9,7 @@
                     <th scope="row">#</th>
                     <th scope="row">TRACTOR NAME</th>
                     <th scope="row">TRACTOR MODEL</th>
-                    <th scope="row">YEAR OF MFG</th>
+                    <!-- <th scope="row">YEAR OF MFG</th> -->
                     <th scope="row">SELL</th>
                 </tr>
             </thead>
@@ -19,7 +19,7 @@
                     <td>{{loop.index}}</td>
                     <td>{{item["tractor-name"]}}</td>
                     <td>{{item["model"]}}</td>
-                    <td>{{item["year-of-manufacturing"]}}</td>
+                    <!-- <td>{{item["year-of-manufacturing"]}}</td> -->
                     <td>
                         <a href="{{ url_for('orders.sell_tractor', tractor=item['chassis-number'])}}" role="button"
                             class="btn btn-success btn-block">
