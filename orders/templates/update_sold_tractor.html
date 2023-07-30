@@ -5,25 +5,17 @@
 <div class="row">
   <div class="col">
     <div class="card">
-      <h5 class="card-header text-center">Update inforation</h5>
+      <h5 class="card-header text-center">Update Sold tractor inforation</h5>
       <form enctype="multipart/form-data" method="POST">
-        {% for key, value in display_tractor.items() %}
+        {% for key, value in update_sold_tractor.items() %}
         {% if key == "chassis-number" %}
         <div class="form-row">
           <div class="col">{{key}}</div>
-          <input type="hidden" class="form-control" name="old-chassis-number" value="{{value}}">
           <div class="col">
-            <input type="text" class="form-control" value="{{value}}" name="{{key}}">
+            <input type="text" class="form-control" value="{{value}}" name="{{key}}" readonly>
           </div>
         </div>
-        {% elif "date" in key %}
-        <div class="form-row">
-          <div class="col">{{key}}</div>
-          <div class="col">
-            <input type="datetime-local" class="form-control" value="{{value.upper()}}" name="{{key}}">
-          </div>
-        </div>
-        {% elif "old-chassis-number" not in key %}
+        {% else %}
         <div class="form-row">
           {% if value %}
           <div class="col">{{key}}</div>
@@ -36,9 +28,21 @@
         </div>
         {% endif %}
         {% endfor %}
-        {% for key in document_field %}
+        {% for key in before_sell_doc_report %}
         <div class="form-row">
-          {% if document_report[key]%}
+          {% if before_sell_doc_report[key]%}
+          <div class="col">{{key}}</div>
+          {%else%}
+          <div class="col bg-danger">{{key}}</div>
+          {%endif%}
+          <div class="col">
+            <input type="file" class="form-control" name="{{key}}" multiple>
+          </div>
+        </div>
+        {%endfor%}
+        {% for key in after_sell_doc_report %}
+        <div class="form-row">
+          {% if after_sell_doc_report[key]%}
           <div class="col">{{key}}</div>
           {%else%}
           <div class="col bg-danger">{{key}}</div>
@@ -59,15 +63,15 @@
   </div>
   <div class="col">
     <div>
-      <a href="{{ url_for('inventory.download_zip', tractor=display_tractor['chassis-number'])}}" role="button"
+      <a href="{{ url_for('inventory.download_zip', tractor=update_sold_tractor['chassis-number'])}}" role="button"
         class="btn btn-dark btn-block">
         DOWNLOAD ZIP
       </a>
     </div>
     <div>
-      <h1>Missing documents</h1>
+      <h5>Missing Before sell documents</h5>
       <ul>
-        {% for doc, files in document_report.items() %}
+        {% for doc, files in before_sell_doc_report.items() %}
         {% if not files %}
         <li>{{doc}}</li>
         {%endif%}
@@ -75,26 +79,23 @@
       </ul>
     </div>
     <div>
-      <h1>Uploaded documents</h1>
-      {% for doc, files in document_report.items() %}
-      {% if files %}
-      <li>{{doc}}
-        <ol>
-          {%for file in files%}
-          <li>{{file}}</li>
-          {%endfor%}
-        </ol>
-
-      </li>
-
-      {%endif%}
-      {%endfor%}
+      <h5>Missing After sell documents</h5>
+      <ul>
+        {% for doc, files in after_sell_doc_report.items() %}
+        {% if not files %}
+        <li>{{doc}}</li>
+        {%endif%}
+        {%endfor%}
+      </ul>
     </div>
+
     <div>
-      <a href="{{ url_for('inventory.download_zip', tractor=display_tractor['chassis-number'])}}" role="button"
+      <a href="{{ url_for('inventory.download_zip', tractor=update_sold_tractor['chassis-number'])}}" role="button"
         class="btn btn-dark btn-block">
         DOWNLOAD ZIP
       </a>
     </div>
   </div>
-  {%endblock%}
+</div>
+
+{%endblock%}

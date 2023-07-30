@@ -13,7 +13,13 @@ from flask import (
 from werkzeug.utils import secure_filename
 
 from common.connector import mongo_conn
-from common.constants import upload_folder
+from common.constants import (
+    upload_folder,
+    before_sell,
+    buy_document_field,
+    godown_list,
+    after_sell,
+)
 from inventory.helper import create_folder, lowercase_data
 from logger import logger
 
@@ -31,34 +37,34 @@ def add_tractor():
     """
     if request.method == "POST":
         try:
-            logger.info("started processing add-tractor".center(80, "^"))
+            logger.info("processing POST /add-tractor".center(80, "^"))
             tractor_details = lowercase_data(dict(request.form))
             chassis_number = tractor_details.get("chassis-number")
             if chassis_number in os.listdir(upload_folder):
-                logger.warning(
-                    f"redirecting to add-tractor cause {chassis_number} folder already exists"
-                )
+                logger.warning(f"{chassis_number} folder already exists")
                 flash(f"chassis number {chassis_number} already exists")
                 return redirect(url_for("inventory.add_tractor"))
             create_folder(chassis_number)
             mongo_conn.db.stock_tractor.insert_one(tractor_details)
-            for file in request.files.getlist("pictures"):
-                if secure_filename(file.filename):
-                    file.save(
-                        os.path.join(
+            for doc_field in buy_document_field:
+                for file in request.files.getlist(doc_field):
+                    if secure_filename(file.filename):
+                        file_path = os.path.join(
                             upload_folder,
                             tractor_details.get("chassis-number"),
-                            "before",
-                            secure_filename(file.filename),
+                            before_sell,
+                            "-".join([doc_field, secure_filename(file.filename)]),
                         )
-                    )
-                    logger.info(
-                        f"{file.filename}->{tractor_details.get('chassis-number')}"
-                    )
-            logger.info("finished processing add-tractor".center(80, "^"))
+                        file.save(file_path)
+                        logger.info(f"{file.filename}->{file_path}")
+            logger.info("finished POST /add-tractor".center(80, "^"))
         except Exception as e:
             logger.exception(f"{str(e)}", exc_info=True)
-    return render_template("add_tractor.html")
+    logger.info("got GET /add-tractor".center(80, "^"))
+    return render_template(
+        "add_tractor.html",
+        godown_list=godown_list,
+    )
 
 
 @inventory_blueprint.route("/view-tractor", methods=["GET"])
@@ -69,10 +75,10 @@ def view_tractor():
     * creates list all tractors and stores in `all_tractor`.
     """
     if request.method == "GET":
-        logger.info("started processing view-tractor".center(80, "^"))
+        logger.info("processing GET /view-tractor".center(80, "^"))
         result = mongo_conn.db.stock_tractor.find({"is-sold": "false"}, {"_id": 0})
         all_tractor = [tractor for tractor in result]
-        logger.info("Finished processing view-tractor".center(80, "^"))
+        logger.info("finished /view-tractor".center(80, "^"))
         return render_template(
             "view_inventory.html",
             all_tractor=all_tractor,
@@ -94,20 +100,33 @@ def update_tractor(tractor=None):
 
     """
     if request.method == "GET":
-        logger.info("started processing view-tractor".center(80, "^"))
+        logger.info(f"processing GET /update-tractor/{tractor}".center(80, "^"))
         display_tractor = mongo_conn.db.stock_tractor.find_one(
             {"chassis-number": tractor}, {"_id": 0, "is-sold": 0}
         )
         # Null response check
         display_tractor = display_tractor if display_tractor else dict()
-        path = os.path.join(upload_folder, tractor, "before")
-        files = [os.path.join(path, file) for file in os.listdir(path)]
-        files = {file: os.path.exists(file) for file in files}
+        path = os.path.join(upload_folder, tractor, before_sell)
+        files = [file for file in os.listdir(path)]
+        document_report = dict()
+        for doc in buy_document_field:
+            document_report[doc] = list()
+            for file in files:
+                if file.startswith(doc):
+                    document_report[doc].append(file)
+
+        logger.info(f"finished GET /update-tractor/{tractor}".center(80, "^"))
         return render_template(
-            "update_tractor.html", display_tractor=display_tractor, files=files
+            "update_tractor.html",
+            display_tractor=display_tractor,
+            files=files,
+            document_field=buy_document_field,
+            document_report=document_report,
         )
     elif request.method == "POST":
+        logger.info(f"processing POST /update-tractor/{tractor}".center(80, "^"))
         if not dict(request.form):  #
+            # TODO: Flash message
             return redirect("/view-tractor")
 
         update_tractor = {"$set": lowercase_data(dict(request.form))}
@@ -135,18 +154,18 @@ def update_tractor(tractor=None):
         )
         logger.info(f"finished updating tractor {chassis_number} in DB")
 
-        for file in request.files.getlist("pictures"):
-            if secure_filename(file.filename):
-                file.save(
-                    os.path.join(
+        for doc_field in buy_document_field:
+            for file in request.files.getlist(doc_field):
+                if secure_filename(file.filename):
+                    file_path = os.path.join(
                         upload_folder,
                         chassis_number,
-                        "before",
-                        secure_filename(file.filename),
+                        before_sell,
+                        "-".join([doc_field, secure_filename(file.filename)]),
                     )
-                )
-                logger.info(f"updated at {file.filename}\t-> {chassis_number}")
-
+                    file.save(file_path)
+                    logger.info(f"storing at {file.filename}->{file_path}")
+        logger.info(f"finished POST /update-tractor/{tractor}".center(80, "^"))
         return redirect(f"/update-tractor/{chassis_number}")
 
 
@@ -162,22 +181,24 @@ def download_zip(tractor=None):
 
     """
     try:
-        logger.info(f"started download-zip api for {tractor}")
+        logger.info(f"processing GET /download-zip/{tractor}".center(80, "^"))
         zipf = zipfile.ZipFile(
-            os.path.join(upload_folder, tractor, f"{tractor}-photos.zip"),
+            os.path.join(upload_folder, tractor, f"{tractor}-documents.zip"),
             "w",
             zipfile.ZIP_DEFLATED,
         )
-        for file in os.listdir(os.path.join(upload_folder, tractor, "before")):
-            zipf.write(os.path.join(upload_folder, tractor, "before", file), file)
+        for sub_folder in [before_sell, after_sell]:
+            for file in os.listdir(os.path.join(upload_folder, tractor, sub_folder)):
+                zipf.write(os.path.join(upload_folder, tractor, sub_folder, file), file)
         zipf.close()
         logger.info(
-            f'created zip file at {os.path.join(upload_folder, tractor, f"{tractor}-photos.zip")}'
+            f'created zip file at {os.path.join(upload_folder, tractor, f"{tractor}-documents.zip")}'
         )
+        logger.info(f"finished GET /download-zip/{tractor}".center(80, "^"))
         return send_file(
-            os.path.join(upload_folder, tractor, f"{tractor}-photos.zip"),
+            os.path.join(upload_folder, tractor, f"{tractor}-documents.zip"),
             mimetype="zip",
-            download_name=f"{tractor}-photos.zip",
+            download_name=f"{tractor}-documents.zip",
             as_attachment=True,
         )
 
