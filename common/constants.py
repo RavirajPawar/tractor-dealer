@@ -22,5 +22,5 @@ godown_list = [
     "Kavalapur",
     "Mhaishal",
     "Palus",
-    "Palus",
+    "kudachi",
 ]
