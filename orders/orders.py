@@ -145,6 +145,7 @@ def update_sold_tractor(tractor=None):
                 "advance": 1,
                 "pending-amount": 1,
                 "chassis-number": 1,
+                "agent-name": 1,
             },
         )
         if not update_sold_tractor:  # if result not found
