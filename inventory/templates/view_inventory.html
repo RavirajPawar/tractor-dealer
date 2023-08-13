@@ -11,6 +11,7 @@
           <th scope="row">TRACTOR NAME</th>
           <th scope="row">TRACTOR MODEL</th>
           <th scope="row">CHASSIS NUMBER</th>
+          <th scope="row">STORED @ GODOWN</th>
           <th scope="row">DOWNLOAD PHOTOS</th>
           <th scope="row">UPDATE INFO</th>
 
@@ -23,6 +24,7 @@
           <td>{{item["tractor-name"]}}</td>
           <td>{{item["model"]}}</td>
           <td>{{item["chassis-number"]}}</td>
+          <td>{{item["storing-godown"]}}</td>
           <td>
             <a href="{{ url_for('inventory.download_zip', tractor=item['chassis-number'])}}" role="button"
               class="btn btn-dark btn-block">
